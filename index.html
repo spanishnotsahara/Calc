@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Конвертер валют</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Тёмный дизайн как на скриншоте */
+        /* Новая цветовая палитра из https://coolors.co/palette/780000-c1121f-fdf0d5-003049-669bbc */
         :root {
-            --dark-bg: #0A0A0A;
-            --dark-card: #1C1C1E;
-            --dark-border: #2C2C2E;
-            --dark-text: #FFFFFF;
-            --dark-secondary: #8E8E93;
-            --green-accent: #32D74B;
-            --red-accent: #FF453A;
-            --blue-accent: #0A84FF;
+            --dark-red: #780000;
+            --bright-red: #C1121F;
+            --cream: #FDF0D5;
+            --dark-blue: #003049;
+            --light-blue: #669BBC;
             --radius: 16px;
         }
 
@@ -22,229 +20,316 @@
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         
         body {
-            background: var(--dark-bg);
-            color: var(--dark-text);
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #001C30 100%);
+            color: var(--cream);
             line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
+            max-width: 1200px; 
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
         }
         
-        /* Статус бар как на скриншоте */
+        /* Статус бар */
         .status-bar {
-            background: var(--dark-bg);
-            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            color: var(--dark-text);
-            border-bottom: 1px solid var(--dark-border);
-            margin-bottom: 20px;
+            color: var(--cream);
             border-radius: var(--radius) var(--radius) 0 0;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--light-blue);
         }
         
-        /* Курс валют сверху */
-        .exchange-info {
-            text-align: center;
-            margin-bottom: 30px;
-            color: var(--green-accent);
-            font-size: 14px;
-        }
-        
-        /* Основная таблица */
+        /* Основной контейнер */
         .calculator-table {
-            background: var(--dark-card);
+            background: rgba(253, 240, 213, 0.95);
             border-radius: var(--radius);
             overflow: hidden;
-            margin-bottom: 40px;
-            border: 1px solid var(--dark-border);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--light-blue);
         }
         
         .table-header {
-            background: linear-gradient(135deg, #1C1C1E 0%, #2C2C2E 100%);
-            color: white;
-            padding: 20px;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--bright-red) 100%);
+            color: var(--cream);
+            padding: 25px;
             text-align: center;
-            border-bottom: 1px solid var(--dark-border);
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 800px;
         }
         
         th, td {
-            padding: 18px 16px;
+            padding: 20px 15px;
             text-align: center;
-            border-bottom: 1px solid var(--dark-border);
+            border-bottom: 1px solid rgba(102, 155, 188, 0.3);
         }
         
         th {
-            background: rgba(44, 44, 46, 0.8);
+            background: rgba(0, 48, 73, 0.9);
             font-weight: 600;
-            font-size: 14px;
-            color: var(--dark-secondary);
+            font-size: 16px;
+            color: var(--cream);
+            border-bottom: 2px solid var(--dark-red);
         }
         
-        /* Ввод данных */
+        /* Ввод данных - разные стили для EUR/USD и остальных */
         .input-cell {
             width: 100%;
-            padding: 14px;
-            background: rgba(44, 44, 46, 0.5);
-            border: 2px solid var(--dark-border);
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--light-blue);
             border-radius: 12px;
             text-align: center;
-            font-size: 16px;
-            color: white;
+            font-weight: 600;
+            color: var(--dark-blue);
             transition: all 0.3s;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
         .input-cell:focus {
             outline: none;
-            border-color: var(--green-accent);
-            background: rgba(50, 215, 75, 0.1);
+            border-color: var(--bright-red);
+            box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.2);
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Специальные стили для EUR и USD (десятые) */
+        #eur-input, #usd-input {
+            font-size: 24px;
+            color: var(--dark-red);
+            background: linear-gradient(to bottom, #FFFFFF, #FFF8F0);
+        }
+        
+        /* Стили для остальных валют */
+        #krw-input, #vnd-input, #rub-input {
+            font-size: 20px;
+            color: var(--dark-blue);
         }
         
         /* Результаты */
         .result-cell {
-            padding: 14px;
+            padding: 18px;
             border-radius: 12px;
             margin: 4px 0;
-            font-weight: 600;
-            font-size: 15px;
+            font-weight: 700;
+            font-size: 18px;
+            min-width: 120px;
         }
         
         .min { 
-            background: rgba(50, 215, 75, 0.15); 
-            color: var(--green-accent); 
-            border: 1px solid rgba(50, 215, 75, 0.3);
+            background: rgba(102, 155, 188, 0.2); 
+            color: var(--dark-blue);
+            border: 2px solid var(--light-blue);
         }
         
         .max { 
-            background: rgba(255, 69, 58, 0.15); 
-            color: var(--red-accent); 
-            border: 1px solid rgba(255, 69, 58, 0.3);
+            background: rgba(193, 18, 31, 0.1); 
+            color: var(--dark-red);
+            border: 2px solid rgba(193, 18, 31, 0.3);
         }
         
         /* Проверка */
         .check-cell {
-            font-size: 22px;
-            width: 40px;
-            height: 40px;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            background: rgba(44, 44, 46, 0.8);
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--light-blue);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
         .valid { 
-            background: rgba(50, 215, 75, 0.2); 
-            color: var(--green-accent); 
+            background: rgba(102, 155, 188, 0.3); 
+            color: var(--dark-blue);
+            border-color: var(--light-blue);
         }
         
         .invalid { 
-            background: rgba(255, 69, 58, 0.2); 
-            color: var(--red-accent); 
+            background: rgba(193, 18, 31, 0.2); 
+            color: var(--bright-red);
+            border-color: var(--bright-red);
+        }
+        
+        /* Панель управления курсами */
+        .rates-panel {
+            background: rgba(0, 48, 73, 0.9);
+            padding: 20px;
+            border-top: 2px solid var(--dark-red);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .rate-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--light-blue);
+        }
+        
+        .rate-label {
+            color: var(--cream);
+            font-weight: 600;
+            min-width: 60px;
+        }
+        
+        .rate-input {
+            width: 100px;
+            padding: 10px;
+            background: white;
+            border: 2px solid var(--light-blue);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--dark-blue);
         }
         
         /* Кнопки */
         .controls {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
-            padding: 20px;
-            background: rgba(28, 28, 30, 0.8);
-            border-top: 1px solid var(--dark-border);
+            padding: 25px;
+            background: rgba(253, 240, 213, 0.98);
+            border-top: 2px solid var(--light-blue);
         }
         
         .btn {
-            padding: 14px 28px;
-            background: var(--green-accent);
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--bright-red) 100%);
             border: none;
             border-radius: 12px;
-            font-weight: 600;
-            color: black;
+            font-weight: 700;
+            color: var(--cream);
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(120, 0, 0, 0.3);
         }
         
         .btn:hover { 
-            background: #28C745; 
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(120, 0, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
         }
         
         .btn-secondary {
-            background: var(--dark-border);
-            color: white;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #001C30 100%);
+            box-shadow: 0 4px 12px rgba(0, 48, 73, 0.3);
         }
         
         .btn-secondary:hover {
-            background: #3A3A3C;
+            box-shadow: 0 6px 18px rgba(0, 48, 73, 0.4);
         }
         
-        /* Информация внизу */
+        /* Информация */
         .info-footer {
             text-align: center;
-            color: var(--dark-secondary);
+            color: var(--dark-blue);
             padding: 20px;
             font-size: 14px;
-            border-top: 1px solid var(--dark-border);
-            background: rgba(28, 28, 30, 0.8);
+            background: rgba(253, 240, 213, 0.9);
+            border-top: 2px solid var(--light-blue);
+        }
+        
+        .formula {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 10px auto;
+            max-width: 600px;
+            border-left: 4px solid var(--bright-red);
         }
         
         /* Адаптивность */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .container { padding: 10px; }
-            th, td { padding: 12px 8px; }
-            .input-cell { padding: 12px; }
-            .btn { padding: 12px 20px; }
+            th, td { padding: 15px 10px; }
+            .input-cell { padding: 15px; }
+            #eur-input, #usd-input { font-size: 22px; }
+            #krw-input, #vnd-input, #rub-input { font-size: 18px; }
+            .rates-panel { flex-direction: column; align-items: stretch; }
+            .rate-control { justify-content: space-between; }
+            .controls { flex-wrap: wrap; }
+            .btn { flex: 1; min-width: 200px; justify-content: center; }
+        }
+        
+        @media (max-width: 600px) {
+            table { min-width: 600px; }
+            .result-cell { padding: 12px; font-size: 16px; }
+            .btn { min-width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Верхняя панель как на скриншоте -->
+        <!-- Верхняя панель -->
         <div class="status-bar">
             <div class="time">9:41</div>
-            <div class="currency-display">1 EUR = 1.07 USD</div>
+            <div class="currency-display" style="color: var(--light-blue);">
+                <i class="fas fa-exchange-alt"></i> Конвертер валют
+            </div>
+            <div class="current-rates" id="current-rates">Курсы загружаются...</div>
         </div>
         
-        <!-- Информация о курсе -->
-        <div class="exchange-info">
-            11.09.2023, 9:41<br>
-            <span style="font-weight: bold;">Диапазон расчёта: ±1.5 от базового значения</span>
-        </div>
-        
-        <!-- Основная таблица калькулятора -->
+        <!-- Основная таблица -->
         <div class="calculator-table">
             <div class="table-header">
-                <h2 style="margin: 0; font-size: 22px; color: var(--green-accent);">💱 Калькулятор валют</h2>
-                <p style="margin-top: 8px; color: var(--dark-secondary); font-size: 14px;">Эквивалентность к EUR с погрешностью ±1.5</p>
+                <h2 style="margin: 0; font-size: 28px;">
+                    <i class="fas fa-calculator"></i> Калькулятор валютных диапазонов
+                </h2>
+                <p style="margin-top: 10px; color: rgba(253, 240, 213, 0.9);">
+                    Диапазон расчёта: ±1.5 от базового значения
+                </p>
             </div>
             
             <div style="overflow-x: auto;">
                 <table>
-                    <!-- Заголовки валют -->
                     <thead>
                         <tr>
-                            <th>EUR</th>
-                            <th>USD</th>
-                            <th>KRW</th>
-                            <th>VND</th>
-                            <th>RUB</th>
+                            <th><i class="fas fa-euro-sign"></i> EUR</th>
+                            <th><i class="fas fa-dollar-sign"></i> USD</th>
+                            <th><i class="fas fa-won-sign"></i> KRW</th>
+                            <th><i class="fas fa-dong-sign"></i> VND</th>
+                            <th><i class="fas fa-ruble-sign"></i> RUB</th>
                         </tr>
                     </thead>
                     
@@ -256,7 +341,8 @@
                                        id="eur-input" 
                                        class="input-cell" 
                                        value="0.1" 
-                                       step="0.01"
+                                       step="0.1" <!-- Шаг 0.1 для EUR -->
+                                       min="0.1"
                                        oninput="calculateAll()">
                             </td>
                             <td>
@@ -264,7 +350,8 @@
                                        id="usd-input" 
                                        class="input-cell" 
                                        value="0.108" 
-                                       step="0.001"
+                                       step="0.1" <!-- Шаг 0.1 для USD -->
+                                       min="0.01"
                                        oninput="validateCurrency('usd')">
                             </td>
                             <td>
@@ -272,7 +359,8 @@
                                        id="krw-input" 
                                        class="input-cell" 
                                        value="145" 
-                                       step="1"
+                                       step="1" <!-- Шаг 1 для KRW -->
+                                       min="1"
                                        oninput="validateCurrency('krw')">
                             </td>
                             <td>
@@ -280,7 +368,8 @@
                                        id="vnd-input" 
                                        class="input-cell" 
                                        value="2700" 
-                                       step="1"
+                                       step="1" <!-- Шаг 1 для VND -->
+                                       min="1"
                                        oninput="validateCurrency('vnd')">
                             </td>
                             <td>
@@ -288,19 +377,13 @@
                                        id="rub-input" 
                                        class="input-cell" 
                                        value="10" 
-                                       step="1"
+                                       step="1" <!-- Шаг 1 для RUB -->
+                                       min="1"
                                        oninput="validateCurrency('rub')">
                             </td>
                         </tr>
                         
-                        <!-- Строка 2: Метки диапазонов -->
-                        <tr>
-                            <td style="color: var(--dark-secondary); font-size: 14px;">EUR</td>
-                            <td style="color: var(--dark-secondary); font-size: 14px;">USD /1.5</td>
-                            <td style="color: var(--dark-secondary); font-size: 14px;">KRW /1.5</td>
-                            <td style="color: var(--dark-secondary); font-size: 14px;">VND /1.5</td>
-                            <td style="color: var(--dark-secondary); font-size: 14px;">RUB /1.5</td>
-                        </tr>
+                        <!-- Строка 2: Метки (УБРАНА строка с /1.5) -->
                         
                         <!-- Строка 3: Диапазон МИН -->
                         <tr>
@@ -342,47 +425,91 @@
                         
                         <!-- Строка 5: Проверка -->
                         <tr>
-                            <td style="color: var(--dark-secondary); font-size: 14px;">Проверка</td>
-                            <td>
-                                <div class="check-cell valid" id="check-usd">✓</div>
+                            <td style="color: var(--dark-blue); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-check-circle"></i> Проверка
                             </td>
                             <td>
-                                <div class="check-cell valid" id="check-krw">✓</div>
+                                <div class="check-cell valid" id="check-usd" title="Значение в диапазоне">✓</div>
                             </td>
                             <td>
-                                <div class="check-cell valid" id="check-vnd">✓</div>
+                                <div class="check-cell valid" id="check-krw" title="Значение в диапазоне">✓</div>
                             </td>
                             <td>
-                                <div class="check-cell valid" id="check-rub">✓</div>
+                                <div class="check-cell valid" id="check-vnd" title="Значение в диапазоне">✓</div>
+                            </td>
+                            <td>
+                                <div class="check-cell valid" id="check-rub" title="Значение в диапазоне">✓</div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
+            <!-- Панель управления курсами -->
+            <div class="rates-panel">
+                <div class="rate-control">
+                    <span class="rate-label">USD:</span>
+                    <input type="number" id="rate-usd" class="rate-input" value="1.08" step="0.01">
+                    <button onclick="updateRate('usd')" style="background: var(--light-blue); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">KRW:</span>
+                    <input type="number" id="rate-krw" class="rate-input" value="1450" step="10">
+                    <button onclick="updateRate('krw')" style="background: var(--light-blue); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">VND:</span>
+                    <input type="number" id="rate-vnd" class="rate-input" value="27000" step="100">
+                    <button onclick="updateRate('vnd')" style="background: var(--light-blue); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">RUB:</span>
+                    <input type="number" id="rate-rub" class="rate-input" value="100" step="1">
+                    <button onclick="updateRate('rub')" style="background: var(--light-blue); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
             <!-- Кнопки управления -->
             <div class="controls">
                 <button class="btn" onclick="calculateAll()">
-                    <i style="margin-right: 8px;">🔄</i> Пересчитать все
+                    <i class="fas fa-redo-alt"></i> Пересчитать
                 </button>
                 <button class="btn btn-secondary" onclick="resetValues()">
-                    <i style="margin-right: 8px;">↺</i> Сбросить
+                    <i class="fas fa-undo"></i> Сбросить
                 </button>
-                <button class="btn btn-secondary" onclick="updateRates()">
-                    <i style="margin-right: 8px;">💱</i> Курсы
+                <button class="btn btn-secondary" onclick="savePreset()">
+                    <i class="fas fa-save"></i> Сохранить
                 </button>
             </div>
             
             <!-- Информация о расчётах -->
             <div class="info-footer">
-                <p><strong>Логика расчёта:</strong> Для 0.1 EUR → Диапазон: 0.0667-0.15 EUR → Пересчёт в другие валюты по курсу</p>
-                <p style="margin-top: 10px; font-size: 12px;">Курсы: USD=1.08 | KRW=1450 | VND=27000 | RUB=100</p>
+                <div class="formula">
+                    <strong><i class="fas fa-calculator"></i> Формула расчёта:</strong><br>
+                    МИНИМУМ = (EUR / 1.5) × Курс валюты<br>
+                    МАКСИМУМ = (EUR × 1.5) × Курс валюты
+                </div>
+                <p style="margin-top: 15px; font-weight: 600;">
+                    <i class="fas fa-info-circle" style="color: var(--bright-red);"></i>
+                    Пример: Для 0.1 EUR → Диапазон: 0.067-0.15 EUR → Пересчёт в другие валюты по курсу
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        // ВАШИ КУРСЫ ВАЛЮТ (как в Google Таблицах)
+        // Курсы валют
         const rates = {
             usd: 1.08,
             krw: 1450,
@@ -390,7 +517,7 @@
             rub: 100
         };
         
-        // Текущие значения из инпутов
+        // Текущие значения из инпутов (исходные значения)
         let currentValues = {
             eur: 0.1,
             usd: 0.108,
@@ -401,8 +528,10 @@
         
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
-            calculateAll();
             updateCurrentTime();
+            calculateAll();
+            loadFromLocalStorage();
+            updateRatesDisplay();
         });
         
         // Обновление времени
@@ -411,11 +540,6 @@
             const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
                              now.getMinutes().toString().padStart(2, '0');
             document.querySelector('.time').textContent = timeString;
-            
-            // Обновляем дату в курсе
-            const dateString = now.toLocaleDateString('ru-RU') + ', ' + timeString;
-            document.querySelector('.exchange-info').innerHTML = 
-                `${dateString}<br><span style="font-weight: bold;">Диапазон расчёта: ±1.5 от базового значения</span>`;
         }
         
         // ОСНОВНАЯ ФУНКЦИЯ РАСЧЁТА
@@ -441,13 +565,13 @@
             // 5. Проверяем все валюты
             validateAllCurrencies();
             
-            // Сохраняем в localStorage
+            // 6. Сохраняем
             saveToLocalStorage();
         }
         
         // РАСЧЁТ ДЛЯ КОНКРЕТНОЙ ВАЛЮТЫ
         function calculateCurrency(currency, rate, eurMin, eurMax) {
-            // Формула из Google Таблиц: =$A$2 * Курс / 1.5  и  =$A$2 * Курс * 1.5
+            // Формула: =EUR × Курс / 1.5  и  =EUR × Курс × 1.5
             
             // МИНИМУМ: (EUR / 1.5) × Курс
             const minInCurrency = eurMin * rate;
@@ -495,11 +619,48 @@
             if (isValid) {
                 checkElement.className = 'check-cell valid';
                 checkElement.textContent = '✓';
-                checkElement.title = 'Значение в допустимом диапазоне';
+                checkElement.title = '✓ В диапазоне: ' + minValue.toFixed(currency === 'usd' ? 2 : 0) + 
+                                   ' - ' + maxValue.toFixed(currency === 'usd' ? 2 : 0);
             } else {
                 checkElement.className = 'check-cell invalid';
                 checkElement.textContent = '✗';
-                checkElement.title = `Должно быть: ${minValue.toFixed(currency === 'usd' ? 2 : 0)} - ${maxValue.toFixed(currency === 'usd' ? 2 : 0)}`;
+                checkElement.title = '✗ Вне диапазона! Должно быть: ' + 
+                                   minValue.toFixed(currency === 'usd' ? 2 : 0) + 
+                                   ' - ' + maxValue.toFixed(currency === 'usd' ? 2 : 0);
+            }
+        }
+        
+        // ОБНОВЛЕНИЕ КУРСА ВАЛЮТЫ
+        function updateRate(currency) {
+            const rateInput = document.getElementById(`rate-${currency}`);
+            const newRate = parseFloat(rateInput.value);
+            
+            if (!isNaN(newRate) && newRate > 0) {
+                rates[currency] = newRate;
+                calculateAll();
+                showNotification(`Курс ${currency.toUpperCase()} обновлен: ${newRate}`);
+            }
+        }
+        
+        // ОБНОВЛЕНИЕ ОТОБРАЖЕНИЯ КУРСОВ
+        function updateRatesDisplay() {
+            const ratesText = `Курсы: $${rates.usd} | ₩${rates.krw} | ₫${rates.vnd} | ₽${rates.rub}`;
+            document.getElementById('current-rates').textContent = ratesText;
+        }
+        
+        // СОХРАНЕНИЕ ПРЕСЕТА
+        function savePreset() {
+            const presetName = prompt('Введите название для сохранения настроек:', 'Мои настройки');
+            if (presetName) {
+                const preset = {
+                    name: presetName,
+                    values: currentValues,
+                    rates: rates,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('currencyPreset', JSON.stringify(preset));
+                showNotification(`Настройки сохранены как "${presetName}"`);
             }
         }
         
@@ -511,27 +672,68 @@
             document.getElementById('vnd-input').value = '2700';
             document.getElementById('rub-input').value = '10';
             
+            // Сбрасываем курсы
+            rates.usd = 1.08;
+            rates.krw = 1450;
+            rates.vnd = 27000;
+            rates.rub = 100;
+            
+            document.getElementById('rate-usd').value = rates.usd;
+            document.getElementById('rate-krw').value = rates.krw;
+            document.getElementById('rate-vnd').value = rates.vnd;
+            document.getElementById('rate-rub').value = rates.rub;
+            
             calculateAll();
+            updateRatesDisplay();
+            showNotification('Значения сброшены к начальным');
         }
         
-        // ИЗМЕНИТЬ КУРСЫ ВАЛЮТ
-        function updateRates() {
-            const newUsd = prompt('Введите курс USD (текущий: ' + rates.usd + '):', rates.usd);
-            const newKrw = prompt('Введите курс KRW (текущий: ' + rates.krw + '):', rates.krw);
-            const newVnd = prompt('Введите курс VND (текущий: ' + rates.vnd + '):', rates.vnd);
-            const newRub = prompt('Введите курс RUB (текущий: ' + rates.rub + '):', rates.rub);
+        // УВЕДОМЛЕНИЕ
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, var(--dark-red), var(--bright-red));
+                color: var(--cream);
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                border-left: 5px solid var(--light-blue);
+            `;
             
-            if (newUsd && !isNaN(newUsd)) rates.usd = parseFloat(newUsd);
-            if (newKrw && !isNaN(newKrw)) rates.krw = parseFloat(newKrw);
-            if (newVnd && !isNaN(newVnd)) rates.vnd = parseFloat(newVnd);
-            if (newRub && !isNaN(newRub)) rates.rub = parseFloat(newRub);
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-check-circle" style="color: var(--light-blue);"></i>
+                    <span>${message}</span>
+                </div>
+            `;
             
-            calculateAll();
-            alert('Курсы обновлены!');
+            document.body.appendChild(notification);
             
-            // Обновляем отображение курсов
-            document.querySelector('.info-footer p:last-child').textContent = 
-                `Курсы: USD=${rates.usd} | KRW=${rates.krw} | VND=${rates.vnd} | RUB=${rates.rub}`;
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
         }
         
         // СОХРАНЕНИЕ В LOCALSTORAGE
@@ -546,23 +748,26 @@
             const savedRates = localStorage.getItem('currencyRates');
             
             if (savedValues) {
-                currentValues = JSON.parse(savedValues);
-                document.getElementById('eur-input').value = currentValues.eur;
-                document.getElementById('usd-input').value = currentValues.usd;
-                document.getElementById('krw-input').value = currentValues.krw;
-                document.getElementById('vnd-input').value = currentValues.vnd;
-                document.getElementById('rub-input').value = currentValues.rub;
+                const loadedValues = JSON.parse(savedValues);
+                document.getElementById('eur-input').value = loadedValues.eur;
+                document.getElementById('usd-input').value = loadedValues.usd;
+                document.getElementById('krw-input').value = loadedValues.krw;
+                document.getElementById('vnd-input').value = loadedValues.vnd;
+                document.getElementById('rub-input').value = loadedValues.rub;
+                currentValues = loadedValues;
             }
             
             if (savedRates) {
-                Object.assign(rates, JSON.parse(savedRates));
+                const loadedRates = JSON.parse(savedRates);
+                Object.assign(rates, loadedRates);
                 
-                // Обновляем отображение курсов
-                document.querySelector('.info-footer p:last-child').textContent = 
-                    `Курсы: USD=${rates.usd} | KRW=${rates.krw} | VND=${rates.vnd} | RUB=${rates.rub}`;
+                document.getElementById('rate-usd').value = rates.usd;
+                document.getElementById('rate-krw').value = rates.krw;
+                document.getElementById('rate-vnd').value = rates.vnd;
+                document.getElementById('rate-rub').value = rates.rub;
             }
             
-            calculateAll();
+            updateRatesDisplay();
         }
         
         // Автосохранение при изменении
@@ -572,11 +777,45 @@
             });
         });
         
-        // Загрузка при старте
-        window.addEventListener('load', loadFromLocalStorage);
-        
         // Обновление времени каждую минуту
         setInterval(updateCurrentTime, 60000);
+        
+        // Обновление при изменении курсов
+        document.querySelectorAll('.rate-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const currency = this.id.replace('rate-', '');
+                updateRate(currency);
+            });
+        });
+        
+        // Кнопки увеличения/уменьшения для удобства
+        document.querySelectorAll('.input-cell').forEach(input => {
+            input.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const step = parseFloat(this.step) || 1;
+                const currentValue = parseFloat(this.value) || 0;
+                
+                if (e.deltaY < 0) {
+                    // Прокрутка вверх - увеличиваем
+                    this.value = (currentValue + step).toFixed(this.step < 1 ? 2 : 0);
+                } else {
+                    // Прокрутка вниз - уменьшаем (но не ниже min)
+                    const min = parseFloat(this.min) || 0;
+                    const newValue = Math.max(min, currentValue - step);
+                    this.value = newValue.toFixed(this.step < 1 ? 2 : 0);
+                }
+                
+                // Запускаем соответствующий расчет
+                if (this.id === 'eur-input') {
+                    calculateAll();
+                } else {
+                    const currency = this.id.replace('-input', '');
+                    validateCurrency(currency);
+                }
+                
+                saveToLocalStorage();
+            });
+        });
     </script>
 </body>
 </html>
