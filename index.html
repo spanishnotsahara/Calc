@@ -48,21 +48,21 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 15px;
+            padding: 20px;
             transition: all 0.4s ease;
         }
 
         .container { 
-            max-width: 1200px; 
+            max-width: 900px; 
             width: 100%;
             margin: 0 auto;
         }
         
-        /* Theme toggle button - mobile friendly */
+        /* Theme toggle button */
         .theme-toggle {
             position: fixed;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             z-index: 1000;
         }
         
@@ -71,15 +71,15 @@
             color: var(--black);
             border: none;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(252, 163, 17, 0.3);
-            font-size: 18px;
+            font-size: 20px;
         }
         
         .theme-btn:hover {
@@ -90,12 +90,11 @@
         /* Header */
         .header {
             text-align: center;
-            padding: 15px 0 20px;
-            margin-top: 10px;
+            padding: 20px 0 25px;
         }
         
         .title {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 5px;
@@ -107,23 +106,21 @@
             background: var(--bg-secondary);
             backdrop-filter: blur(10px);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
             box-shadow: var(--card-shadow);
             transition: all 0.4s ease;
-            overflow-x: auto;
         }
         
-        /* Mobile first table */
+        /* Compact table */
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px; /* Минимальная ширина для горизонтального скролла на мобильных */
         }
         
         th, td {
-            padding: 14px 10px;
+            padding: 16px 12px;
             text-align: center;
             vertical-align: middle;
             border-bottom: 1px solid var(--border-color);
@@ -132,34 +129,26 @@
         
         th {
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
-            height: 45px;
+            height: 50px;
             transition: color 0.4s ease;
-            white-space: nowrap;
         }
         
-        /* Input fields - optimized for mobile */
+        /* Input fields */
         .input-cell {
             width: 100%;
-            height: 48px;
-            padding: 12px;
+            height: 52px;
+            padding: 14px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             text-align: center;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 500;
             color: var(--text-primary);
             transition: all 0.3s ease;
             appearance: textfield;
-            font-size: 16px; /* Увеличиваем для лучшей читаемости на мобильных */
-        }
-        
-        /* Для iOS Safari */
-        .input-cell {
-            -webkit-appearance: none;
-            -moz-appearance: textfield;
         }
         
         .input-cell::-webkit-inner-spin-button,
@@ -184,16 +173,15 @@
         
         /* Results cells */
         .result-cell {
-            padding: 12px 6px;
+            padding: 14px 8px;
             border-radius: 6px;
             font-weight: 500;
-            font-size: 14px;
-            height: 48px;
+            font-size: 15px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            word-break: break-word;
         }
         
         .min { 
@@ -215,14 +203,14 @@
         
         /* Check cells */
         .check-cell {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            font-size: 15px;
+            font-size: 16px;
             background: var(--input-bg);
             transition: all 0.3s ease;
         }
@@ -244,22 +232,18 @@
         /* Hidden rates controls */
         .rates-toggle {
             text-align: center;
-            margin: 20px 0 12px;
+            margin: 25px 0 15px;
         }
         
         .toggle-btn {
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
-            padding: 10px 18px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
             transition: all 0.3s ease;
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto;
-            display: block;
         }
         
         .toggle-btn:hover {
@@ -270,9 +254,9 @@
         
         .rates-panel {
             background: var(--input-bg);
-            padding: 18px;
+            padding: 20px;
             border-radius: var(--radius);
-            margin-top: 12px;
+            margin-top: 15px;
             display: none;
             border: 1px solid var(--border-color);
             animation: slideDown 0.3s ease;
@@ -282,8 +266,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
+            margin-bottom: 12px;
         }
         
         .rate-control:last-child {
@@ -292,15 +275,13 @@
         
         .rate-label {
             color: var(--text-secondary);
-            font-size: 13px;
-            min-width: 65px;
-            margin-bottom: 5px;
+            font-size: 14px;
+            min-width: 70px;
         }
         
         .rate-input {
-            width: 100%;
-            max-width: 130px;
-            padding: 8px 10px;
+            width: 130px;
+            padding: 8px 12px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -308,7 +289,6 @@
             color: var(--text-primary);
             appearance: textfield;
             transition: all 0.3s ease;
-            font-size: 14px;
         }
         
         .rate-input::-webkit-inner-spin-button,
@@ -322,18 +302,17 @@
             background: rgba(252, 163, 17, 0.05);
         }
         
-        /* Controls - optimized for mobile */
+        /* Controls */
         .controls {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
-            padding-top: 20px;
+            padding-top: 25px;
             border-top: 1px solid var(--border-color);
         }
         
         .btn {
-            padding: 12px 20px;
+            padding: 14px 28px;
             background: rgba(252, 163, 17, 0.9);
             border: none;
             border-radius: 8px;
@@ -344,11 +323,7 @@
             font-size: 14px;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            flex: 1;
-            min-width: 140px;
-            max-width: 200px;
         }
         
         .btn:hover { 
@@ -378,22 +353,22 @@
         .info-footer {
             text-align: center;
             color: var(--text-secondary);
-            padding: 15px;
-            font-size: 11px;
+            padding: 20px;
+            font-size: 12px;
             opacity: 0.7;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             transition: color 0.4s ease;
         }
         
         .formula {
-            font-size: 10px;
+            font-size: 11px;
             opacity: 0.6;
         }
         
         .signature {
-            font-size: 10px;
+            font-size: 11px;
             opacity: 0.5;
         }
         
@@ -427,238 +402,24 @@
             100% { transform: scale(1); }
         }
         
-        /* Mobile-specific styles */
+        /* Responsive */
         @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-            
-            .container {
-                padding: 0 5px;
-            }
-            
-            .header {
-                padding: 10px 0 15px;
-                margin-top: 40px; /* Отступ для кнопки темы */
-            }
-            
-            .title {
-                font-size: 24px;
-            }
-            
+            .container { padding: 10px; }
             .theme-toggle {
                 top: 10px;
                 right: 10px;
             }
-            
             .theme-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
-            
-            .calculator-card {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-            
-            table {
-                min-width: 550px;
-                font-size: 13px;
-            }
-            
-            th, td {
-                padding: 10px 6px;
-            }
-            
-            th {
-                font-size: 13px;
-                height: 40px;
-                padding: 8px 4px;
-            }
-            
-            .input-cell {
-                height: 42px;
-                padding: 10px;
-                font-size: 15px;
-            }
-            
-            .result-cell {
-                padding: 10px 4px;
-                height: 42px;
-                font-size: 13px;
-            }
-            
-            .check-cell {
-                width: 28px;
-                height: 28px;
-                font-size: 14px;
-            }
-            
-            .btn {
-                padding: 10px 16px;
-                font-size: 13px;
-                min-width: 120px;
-            }
-            
-            .rate-control {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-            
-            .rate-input {
-                max-width: 100%;
-                width: 100%;
-            }
-            
-            .controls {
-                gap: 8px;
-            }
-        }
-        
-        /* Extra small devices */
-        @media (max-width: 480px) {
-            .title {
-                font-size: 22px;
-            }
-            
-            table {
-                min-width: 500px;
-            }
-            
-            th, td {
-                padding: 8px 4px;
-            }
-            
-            th {
-                font-size: 12px;
-            }
-            
-            .input-cell {
-                font-size: 14px;
-                height: 40px;
-                padding: 8px;
-            }
-            
-            .result-cell {
-                font-size: 12px;
-                height: 40px;
-            }
-            
-            .btn {
-                padding: 10px 12px;
-                font-size: 12px;
-                min-width: 110px;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 100%;
-            }
-            
-            .toggle-btn {
-                width: 100%;
-                max-width: 100%;
-            }
-        }
-        
-        /* Large screens */
-        @media (min-width: 1200px) {
-            .container {
-                max-width: 1100px;
-            }
-            
-            table {
-                min-width: 800px;
-            }
-            
-            th, td {
-                padding: 18px 14px;
-            }
-            
-            .input-cell {
-                height: 56px;
-                font-size: 17px;
-            }
-            
-            .result-cell {
-                height: 56px;
-                font-size: 16px;
-            }
-        }
-        
-        /* Landscape mode for mobile */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .header {
-                padding: 5px 0 10px;
-                margin-top: 0;
-            }
-            
-            .title {
-                font-size: 20px;
-                margin-bottom: 0;
-            }
-            
-            .calculator-card {
-                padding: 12px;
-            }
-            
-            table {
-                min-width: 500px;
-            }
-            
-            th, td {
-                padding: 6px 4px;
-            }
-            
-            .input-cell {
-                height: 36px;
-                padding: 6px;
-            }
-            
-            .result-cell {
-                height: 36px;
-                padding: 6px 2px;
-                font-size: 12px;
-            }
-        }
-        
-        /* Touch device optimizations */
-        @media (hover: none) and (pointer: coarse) {
-            .btn:hover, .toggle-btn:hover, .theme-btn:hover {
-                transform: none;
-            }
-            
-            .btn:active, .toggle-btn:active, .theme-btn:active {
-                transform: scale(0.95);
-            }
-            
-            .input-cell:focus {
-                transform: scale(1);
-            }
-            
-            /* Увеличиваем зону клика для мобильных */
-            .input-cell, .btn, .toggle-btn, .theme-btn {
-                min-height: 44px; /* Минимальная высота для касания по рекомендациям Apple */
-            }
-        }
-        
-        /* Dark mode detection */
-        @media (prefers-color-scheme: dark) {
-            :root:not(.light-theme) {
-                /* Уже установлены dark theme цвета */
-            }
-        }
-        
-        @media (prefers-color-scheme: light) {
-            :root:not(.light-theme) {
-                /* Если не выбрана светлая тема вручную, но система в светлой */
-            }
+            th, td { padding: 12px 8px; }
+            .input-cell { padding: 12px; font-size: 15px; height: 48px; }
+            .controls { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .rate-control { flex-direction: column; gap: 8px; align-items: flex-start; }
+            .rate-input { width: 100%; }
         }
     </style>
 </head>
@@ -698,37 +459,32 @@
                                    id="eur-input" 
                                    class="input-cell" 
                                    placeholder="0.0"
-                                   step="0.1"
-                                   inputmode="decimal">
+                                   step="0.1">
                         </td>
                         <td>
                             <input type="number" 
                                    id="usd-input" 
                                    class="input-cell" 
                                    placeholder="0.0"
-                                   step="0.1"
-                                   inputmode="decimal">
+                                   step="0.1">
                         </td>
                         <td>
                             <input type="number" 
                                    id="krw-input" 
                                    class="input-cell" 
-                                   placeholder="0"
-                                   inputmode="numeric">
+                                   placeholder="0">
                         </td>
                         <td>
                             <input type="number" 
                                    id="vnd-input" 
                                    class="input-cell" 
-                                   placeholder="0"
-                                   inputmode="numeric">
+                                   placeholder="0">
                         </td>
                         <td>
                             <input type="number" 
                                    id="rub-input" 
                                    class="input-cell" 
-                                   placeholder="0"
-                                   inputmode="numeric">
+                                   placeholder="0">
                         </td>
                     </tr>
                     
@@ -772,7 +528,7 @@
                     
                     <!-- Row 4: Validation -->
                     <tr>
-                        <td style="font-size: 12px; color: var(--text-secondary); opacity: 0.7; height: 40px;">
+                        <td style="font-size: 13px; color: var(--text-secondary); opacity: 0.7; height: 50px;">
                             ✓ / ✗
                         </td>
                         <td>
@@ -828,7 +584,7 @@
             <!-- Control buttons -->
             <div class="controls">
                 <button class="btn" onclick="calculateAll()">
-                    🔄 Calculate
+                    🔄 Calculate All
                 </button>
                 <button class="btn btn-secondary" onclick="resetValues()">
                     ↺ Reset
@@ -868,32 +624,12 @@
         // Theme state
         let isDarkTheme = true;
         
-        // Mobile detection
-        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             setupTheme();
-            setupMobileOptimizations();
             clearAllOnStart();
         });
-        
-        // Mobile optimizations
-        function setupMobileOptimizations() {
-            if (isMobile) {
-                // Убираем hover эффекты на мобильных
-                document.body.classList.add('mobile-device');
-                
-                // Добавляем возможность закрывать клавиатуру по тапу вне полей
-                document.addEventListener('touchstart', function(e) {
-                    if (!e.target.classList.contains('input-cell') && 
-                        !e.target.classList.contains('rate-input')) {
-                        document.activeElement.blur();
-                    }
-                }, { passive: true });
-            }
-        }
         
         // Setup theme from localStorage or system preference
         function setupTheme() {
@@ -990,33 +726,6 @@
                     toggleTheme();
                 }
             });
-            
-            // Prevent zoom on double tap (mobile)
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', function(e) {
-                const now = Date.now();
-                if (now - lastTouchEnd <= 300) {
-                    e.preventDefault();
-                }
-                lastTouchEnd = now;
-            }, { passive: false });
-            
-            // Handle orientation change
-            window.addEventListener('orientationchange', function() {
-                // Небольшая задержка для стабилизации экрана
-                setTimeout(adjustLayout, 100);
-            });
-        }
-        
-        // Adjust layout on orientation change
-        function adjustLayout() {
-            if (window.innerHeight > window.innerWidth) {
-                // Portrait mode
-                console.log('Portrait mode');
-            } else {
-                // Landscape mode
-                console.log('Landscape mode');
-            }
         }
         
         // MAIN CALCULATION FUNCTION
@@ -1070,12 +779,8 @@
                 minElement.textContent = minInCurrency.toFixed(2);
                 maxElement.textContent = maxInCurrency.toFixed(2);
             } else {
-                // Форматируем большие числа с пробелами
-                const formatter = new Intl.NumberFormat('ru-RU', {
-                    maximumFractionDigits: 0
-                });
-                minElement.textContent = formatter.format(Math.round(minInCurrency));
-                maxElement.textContent = formatter.format(Math.round(maxInCurrency));
+                minElement.textContent = Math.round(minInCurrency).toLocaleString();
+                maxElement.textContent = Math.round(maxInCurrency).toLocaleString();
             }
         }
         
@@ -1102,9 +807,8 @@
                 return;
             }
             
-            // Убираем пробелы в числах (форматирование)
-            const minValue = parseFloat(minText.replace(/\s/g, '').replace(',', '.')) || 0;
-            const maxValue = parseFloat(maxText.replace(/\s/g, '').replace(',', '.')) || 0;
+            const minValue = parseFloat(minText.replace(/,/g, '')) || 0;
+            const maxValue = parseFloat(maxText.replace(/,/g, '')) || 0;
             
             const checkElement = document.getElementById(`check-${currency}`);
             const isValid = inputValue >= minValue && inputValue <= maxValue;
@@ -1177,14 +881,13 @@
             showNotification('All cleared');
         }
         
-        // SHOW NOTIFICATION - адаптированная для мобильных
+        // SHOW NOTIFICATION
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
-                bottom: ${isMobile ? '70px' : '20px'};
-                left: 50%;
-                transform: translateX(-50%);
+                bottom: 20px;
+                right: 20px;
                 background: rgba(252, 163, 17, 0.95);
                 color: #000;
                 padding: 12px 20px;
@@ -1192,21 +895,17 @@
                 font-size: 14px;
                 font-weight: 500;
                 z-index: 1000;
-                animation: slideUp 0.3s ease;
+                animation: slideIn 0.3s ease;
                 border-left: 3px solid rgba(0, 0, 0, 0.2);
-                max-width: 90%;
-                text-align: center;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                max-width: 300px;
+                word-wrap: break-word;
             `;
             
             notification.textContent = message;
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.style.animation = 'slideDown 0.3s ease';
+                notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => notification.remove(), 300);
             }, 2000);
             
@@ -1214,104 +913,47 @@
                 const style = document.createElement('style');
                 style.id = 'notification-styles';
                 style.textContent = `
-                    @keyframes slideUp {
-                        from { 
-                            transform: translateX(-50%) translateY(20px); 
-                            opacity: 0; 
-                        }
-                        to { 
-                            transform: translateX(-50%) translateY(0); 
-                            opacity: 1; 
-                        }
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
                     }
-                    @keyframes slideDown {
-                        from { 
-                            transform: translateX(-50%) translateY(0); 
-                            opacity: 1; 
-                        }
-                        to { 
-                            transform: translateX(-50%) translateY(20px); 
-                            opacity: 0; 
-                        }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
                     }
                 `;
                 document.head.appendChild(style);
             }
         }
         
-        // Touch-friendly increment/decrement
-        function setupTouchIncrement() {
-            document.querySelectorAll('.input-cell').forEach(input => {
-                let touchStartY = 0;
+        // Mouse wheel support for inputs
+        document.querySelectorAll('.input-cell').forEach(input => {
+            input.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const step = parseFloat(this.step) || 1;
+                const currentValue = parseFloat(this.value) || 0;
                 
-                input.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                }, { passive: true });
+                let newValue;
+                if (e.deltaY < 0) {
+                    newValue = currentValue + step;
+                } else {
+                    newValue = Math.max(0, currentValue - step);
+                }
                 
-                input.addEventListener('touchend', function(e) {
-                    const touchEndY = e.changedTouches[0].clientY;
-                    const diff = touchStartY - touchEndY;
-                    
-                    if (Math.abs(diff) > 30) { // Минимальное расстояние свайпа
-                        const step = parseFloat(this.step) || 1;
-                        const currentValue = parseFloat(this.value) || 0;
-                        
-                        if (diff > 0) {
-                            // Свайп вверх - увеличиваем
-                            this.value = (currentValue + step).toFixed(this.step < 1 ? 2 : 0);
-                        } else {
-                            // Свайп вниз - уменьшаем
-                            const min = parseFloat(this.min) || 0;
-                            const newValue = Math.max(min, currentValue - step);
-                            this.value = newValue.toFixed(this.step < 1 ? 2 : 0);
-                        }
-                        
-                        if (this.id === 'eur-input') {
-                            calculateAll();
-                        } else {
-                            const currency = this.id.replace('-input', '');
-                            validateCurrency(currency);
-                        }
-                    }
-                }, { passive: true });
+                if (step < 1) {
+                    this.value = newValue.toFixed(2);
+                } else {
+                    this.value = Math.round(newValue);
+                }
+                
+                if (this.id === 'eur-input') {
+                    calculateAll();
+                } else {
+                    const currency = this.id.replace('-input', '');
+                    validateCurrency(currency);
+                }
             });
-        }
-        
-        // Initialize touch controls
-        if (isMobile) {
-            setTimeout(setupTouchIncrement, 500);
-        }
-        
-        // Mouse wheel support for desktop
-        if (!isMobile) {
-            document.querySelectorAll('.input-cell').forEach(input => {
-                input.addEventListener('wheel', function(e) {
-                    e.preventDefault();
-                    const step = parseFloat(this.step) || 1;
-                    const currentValue = parseFloat(this.value) || 0;
-                    
-                    let newValue;
-                    if (e.deltaY < 0) {
-                        newValue = currentValue + step;
-                    } else {
-                        newValue = Math.max(0, currentValue - step);
-                    }
-                    
-                    if (step < 1) {
-                        this.value = newValue.toFixed(2);
-                    } else {
-                        this.value = Math.round(newValue);
-                    }
-                    
-                    if (this.id === 'eur-input') {
-                        calculateAll();
-                    } else {
-                        const currency = this.id.replace('-input', '');
-                        validateCurrency(currency);
-                    }
-                });
-            });
-        }
+        });
     </script>
 </body>
 </html>
