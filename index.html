@@ -29,9 +29,6 @@
             color: var(--white);
             min-height: 100vh;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .container { 
@@ -43,20 +40,14 @@
         /* Header - minimalist */
         .header {
             text-align: center;
-            padding: 20px 0 30px;
+            padding: 20px 0 25px;
         }
         
         .title {
             font-size: 32px;
             font-weight: 700;
             color: var(--white);
-            margin-bottom: 8px;
-        }
-        
-        .subtitle {
-            font-size: 14px;
-            color: var(--light-gray);
-            opacity: 0.7;
+            margin-bottom: 5px;
         }
         
         /* Main calculator card */
@@ -77,7 +68,7 @@
         }
         
         th, td {
-            padding: 18px 12px;
+            padding: 16px 12px;
             text-align: center;
             vertical-align: middle;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -85,17 +76,15 @@
         
         th {
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--light-gray);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            height: 60px;
+            height: 50px;
         }
         
-        /* Input fields - compact and clean */
+        /* Input fields - no arrows, centered text */
         .input-cell {
             width: 100%;
-            height: 50px;
+            height: 52px;
             padding: 14px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -104,13 +93,23 @@
             font-size: 16px;
             font-weight: 500;
             color: var(--white);
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            appearance: textfield;
+        }
+        
+        /* Hide arrows in number inputs */
+        .input-cell::-webkit-inner-spin-button,
+        .input-cell::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         
         .input-cell:focus {
             outline: none;
             border-color: var(--gold);
             background: rgba(252, 163, 17, 0.05);
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px rgba(252, 163, 17, 0.1);
         }
         
         /* EUR and USD specific */
@@ -119,17 +118,17 @@
             border-color: rgba(252, 163, 17, 0.3);
         }
         
-        /* Results cells - very compact */
+        /* Results cells - centered content */
         .result-cell {
-            padding: 12px 8px;
+            padding: 14px 8px;
             border-radius: 6px;
             font-weight: 500;
             font-size: 15px;
-            margin: 2px 0;
-            min-height: 44px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
         }
         
         .min { 
@@ -144,7 +143,7 @@
             border: 1px solid rgba(229, 229, 229, 0.2);
         }
         
-        /* Check cells - with colors */
+        /* Check cells - with colors and animation */
         .check-cell {
             width: 32px;
             height: 32px;
@@ -155,18 +154,21 @@
             margin: 0 auto;
             font-size: 16px;
             background: rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
         }
         
         .valid { 
             background: rgba(76, 175, 80, 0.2); 
             color: var(--green);
             border: 1px solid rgba(76, 175, 80, 0.3);
+            animation: pulseGreen 0.5s ease;
         }
         
         .invalid { 
             background: rgba(244, 67, 54, 0.2); 
             color: var(--red);
             border: 1px solid rgba(244, 67, 54, 0.3);
+            animation: pulseRed 0.5s ease;
         }
         
         /* Hidden rates controls */
@@ -183,11 +185,12 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
         
         .toggle-btn:hover {
             background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
         }
         
         .rates-panel {
@@ -197,6 +200,7 @@
             margin-top: 15px;
             display: none;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideDown 0.3s ease;
         }
         
         .rate-control {
@@ -224,6 +228,19 @@
             border-radius: 6px;
             text-align: center;
             color: var(--white);
+            appearance: textfield;
+            transition: all 0.3s ease;
+        }
+        
+        .rate-input::-webkit-inner-spin-button,
+        .rate-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .rate-input:focus {
+            border-color: var(--gold);
+            background: rgba(252, 163, 17, 0.05);
         }
         
         /* Controls - minimal */
@@ -243,7 +260,7 @@
             font-weight: 500;
             color: var(--black);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             font-size: 14px;
             display: flex;
             align-items: center;
@@ -252,6 +269,11 @@
         
         .btn:hover { 
             background: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(252, 163, 17, 0.3);
+        }
+        
+        .btn:active {
             transform: translateY(-1px);
         }
         
@@ -262,6 +284,8 @@
         
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
         }
         
         /* Footer info */
@@ -270,14 +294,51 @@
             color: var(--light-gray);
             padding: 20px;
             font-size: 12px;
+            opacity: 0.7;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .formula {
+            font-size: 11px;
             opacity: 0.6;
+        }
+        
+        .signature {
+            font-size: 11px;
+            opacity: 0.5;
+        }
+        
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulseGreen {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes pulseRed {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             .container { padding: 10px; }
             th, td { padding: 12px 8px; }
-            .input-cell { padding: 12px; font-size: 15px; height: 44px; }
+            .input-cell { padding: 12px; font-size: 15px; height: 48px; }
             .controls { flex-direction: column; }
             .btn { width: 100%; justify-content: center; }
             .rate-control { flex-direction: column; gap: 8px; align-items: flex-start; }
@@ -290,7 +351,6 @@
         <!-- Header -->
         <div class="header">
             <div class="title">💱 Currency Calculator</div>
-            <div class="subtitle">Calculate ±1.5 range from base value</div>
         </div>
         
         <!-- Main Calculator -->
@@ -308,7 +368,7 @@
                 </thead>
                 
                 <tbody>
-                    <!-- Row 1: Input values -->
+                    <!-- Row 1: Input values - ALL EMPTY -->
                     <tr>
                         <td>
                             <input type="number" 
@@ -384,8 +444,8 @@
                     
                     <!-- Row 4: Validation -->
                     <tr>
-                        <td style="font-size: 12px; color: var(--light-gray); opacity: 0.7;">
-                            Check
+                        <td style="font-size: 13px; color: var(--light-gray); opacity: 0.7; height: 50px;">
+                            ✓ / ✗
                         </td>
                         <td>
                             <div class="check-cell invalid" id="check-usd">✗</div>
@@ -412,27 +472,27 @@
             
             <div class="rates-panel" id="ratesPanel">
                 <div class="rate-control">
-                    <span class="rate-label">EUR Rate:</span>
+                    <span class="rate-label">EUR:</span>
                     <input type="number" id="rate-eur" class="rate-input" value="1.00" step="0.01" readonly>
                 </div>
                 
                 <div class="rate-control">
-                    <span class="rate-label">USD Rate:</span>
+                    <span class="rate-label">USD:</span>
                     <input type="number" id="rate-usd" class="rate-input" value="1.19" step="0.01">
                 </div>
                 
                 <div class="rate-control">
-                    <span class="rate-label">KRW Rate:</span>
+                    <span class="rate-label">KRW:</span>
                     <input type="number" id="rate-krw" class="rate-input" value="1712.96" step="0.01">
                 </div>
                 
                 <div class="rate-control">
-                    <span class="rate-label">VND Rate:</span>
+                    <span class="rate-label">VND:</span>
                     <input type="number" id="rate-vnd" class="rate-input" value="31127.90" step="0.01">
                 </div>
                 
                 <div class="rate-control">
-                    <span class="rate-label">RUB Rate:</span>
+                    <span class="rate-label">RUB:</span>
                     <input type="number" id="rate-rub" class="rate-input" value="91.18" step="0.01">
                 </div>
             </div>
@@ -453,12 +513,13 @@
         
         <!-- Footer -->
         <div class="info-footer">
-            Formula: MIN = (EUR ÷ 1.5) × Rate | MAX = (EUR × 1.5) × Rate
+            <div class="formula">MIN = (EUR ÷ 1.5) × Rate | MAX = (EUR × 1.5) × Rate</div>
+            <div class="signature">Made by Aleksei Shabarin</div>
         </div>
     </div>
 
     <script>
-        // Exchange rates (updated)
+        // Exchange rates (updated, 2 decimal places)
         const rates = {
             eur: 1.00,
             usd: 1.19,
@@ -467,7 +528,7 @@
             rub: 91.18
         };
         
-        // Current values - все пустые изначально
+        // Current values - ALL EMPTY
         let currentValues = {
             eur: 0,
             usd: 0,
@@ -479,9 +540,20 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
-            loadFromLocalStorage();
-            updateAllChecksToX();
+            // Don't load saved values - start fresh with empty fields
+            clearAllOnStart();
         });
+        
+        // Clear everything on start
+        function clearAllOnStart() {
+            document.getElementById('eur-input').value = '';
+            document.getElementById('usd-input').value = '';
+            document.getElementById('krw-input').value = '';
+            document.getElementById('vnd-input').value = '';
+            document.getElementById('rub-input').value = '';
+            
+            resetResults();
+        }
         
         // Setup event listeners
         function setupEventListeners() {
@@ -503,14 +575,15 @@
                     updateRate(currency);
                 });
             });
-        }
-        
-        // Set all checks to X initially
-        function updateAllChecksToX() {
-            ['usd', 'krw', 'vnd', 'rub'].forEach(currency => {
-                const checkElement = document.getElementById(`check-${currency}`);
-                checkElement.className = 'check-cell invalid';
-                checkElement.textContent = '✗';
+            
+            // Add keyboard support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    calculateAll();
+                }
+                if (e.key === 'Escape') {
+                    clearAll();
+                }
             });
         }
         
@@ -530,7 +603,7 @@
             const eurMin = eurValue / 1.5;
             const eurMax = eurValue * 1.5;
             
-            // Update EUR display
+            // Update EUR display with 2 decimal places
             document.getElementById('eur-min').textContent = eurMin.toFixed(2);
             document.getElementById('eur-max').textContent = eurMax.toFixed(2);
             
@@ -542,9 +615,6 @@
             
             // Validate all
             validateAllCurrencies();
-            
-            // Save
-            saveToLocalStorage();
         }
         
         // Reset results when EUR is 0
@@ -560,8 +630,6 @@
                 checkElement.className = 'check-cell invalid';
                 checkElement.textContent = '✗';
             });
-            
-            saveToLocalStorage();
         }
         
         // CALCULATE FOR SPECIFIC CURRENCY
@@ -572,16 +640,13 @@
             // MAX: (EUR × 1.5) × Rate
             const maxInCurrency = eurMax * rate;
             
-            // Rounding
-            const decimals = currency === 'usd' ? 2 : 0;
-            
-            // Update display
+            // Always show 2 decimal places for USD, 0 for others
             const minElement = document.getElementById(`${currency}-min`);
             const maxElement = document.getElementById(`${currency}-max`);
             
             if (currency === 'usd') {
-                minElement.textContent = minInCurrency.toFixed(decimals);
-                maxElement.textContent = maxInCurrency.toFixed(decimals);
+                minElement.textContent = minInCurrency.toFixed(2);
+                maxElement.textContent = maxInCurrency.toFixed(2);
             } else {
                 minElement.textContent = Math.round(minInCurrency).toLocaleString();
                 maxElement.textContent = Math.round(maxInCurrency).toLocaleString();
@@ -620,51 +685,60 @@
             
             checkElement.className = `check-cell ${isValid ? 'valid' : 'invalid'}`;
             checkElement.textContent = isValid ? '✓' : '✗';
-            
-            saveToLocalStorage();
         }
         
         // UPDATE EXCHANGE RATE
         function updateRate(currency) {
             const rateInput = document.getElementById(`rate-${currency}`);
-            const newRate = parseFloat(rateInput.value);
+            let newRate = parseFloat(rateInput.value);
             
+            // Ensure 2 decimal places
             if (!isNaN(newRate) && newRate > 0) {
+                newRate = Math.round(newRate * 100) / 100;
+                rateInput.value = newRate.toFixed(2);
                 rates[currency] = newRate;
                 calculateAll();
-                showNotification(`Rate updated: ${newRate}`);
+                showNotification(`Rate updated: ${newRate.toFixed(2)}`);
             }
         }
         
         // TOGGLE RATES PANEL
         function toggleRates() {
             const panel = document.getElementById('ratesPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            if (panel.style.display === 'block') {
+                panel.style.animation = 'slideDown 0.3s ease reverse';
+                setTimeout(() => {
+                    panel.style.display = 'none';
+                }, 250);
+            } else {
+                panel.style.display = 'block';
+                panel.style.animation = 'slideDown 0.3s ease';
+            }
         }
         
         // RESET TO DEFAULT VALUES
         function resetValues() {
-            // Очищаем поля ввода
+            // Clear all input fields
             document.getElementById('eur-input').value = '';
             document.getElementById('usd-input').value = '';
             document.getElementById('krw-input').value = '';
             document.getElementById('vnd-input').value = '';
             document.getElementById('rub-input').value = '';
             
-            // Сбрасываем результаты
+            // Reset results
             resetResults();
             
-            // Сбрасываем курсы к значениям по умолчанию
+            // Reset rates to defaults with 2 decimal places
             rates.usd = 1.19;
             rates.krw = 1712.96;
             rates.vnd = 31127.90;
             rates.rub = 91.18;
             
-            // Обновляем поля курсов
-            document.getElementById('rate-usd').value = rates.usd;
-            document.getElementById('rate-krw').value = rates.krw;
-            document.getElementById('rate-vnd').value = rates.vnd;
-            document.getElementById('rate-rub').value = rates.rub;
+            // Update rate inputs
+            document.getElementById('rate-usd').value = rates.usd.toFixed(2);
+            document.getElementById('rate-krw').value = rates.krw.toFixed(2);
+            document.getElementById('rate-vnd').value = rates.vnd.toFixed(2);
+            document.getElementById('rate-rub').value = rates.rub.toFixed(2);
             
             showNotification('Reset to defaults');
         }
@@ -683,7 +757,7 @@
             showNotification('All cleared');
         }
         
-        // SHOW NOTIFICATION
+        // SHOW NOTIFICATION with animation
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -699,6 +773,8 @@
                 z-index: 1000;
                 animation: slideIn 0.3s ease;
                 border-left: 3px solid rgba(0, 0, 0, 0.2);
+                max-width: 300px;
+                word-wrap: break-word;
             `;
             
             notification.textContent = message;
@@ -709,7 +785,7 @@
                 setTimeout(() => notification.remove(), 300);
             }, 2000);
             
-            // Add animation styles
+            // Add animation styles if not present
             if (!document.querySelector('#notification-styles')) {
                 const style = document.createElement('style');
                 style.id = 'notification-styles';
@@ -727,57 +803,25 @@
             }
         }
         
-        // SAVE TO LOCALSTORAGE
-        function saveToLocalStorage() {
-            localStorage.setItem('currencyValues', JSON.stringify(currentValues));
-            localStorage.setItem('currencyRates', JSON.stringify(rates));
-        }
-        
-        // LOAD FROM LOCALSTORAGE
-        function loadFromLocalStorage() {
-            const savedValues = localStorage.getItem('currencyValues');
-            const savedRates = localStorage.getItem('currencyRates');
-            
-            if (savedValues) {
-                const loadedValues = JSON.parse(savedValues);
-                // Загружаем только если значения не пустые
-                if (loadedValues.eur) document.getElementById('eur-input').value = loadedValues.eur;
-                if (loadedValues.usd) document.getElementById('usd-input').value = loadedValues.usd;
-                if (loadedValues.krw) document.getElementById('krw-input').value = loadedValues.krw;
-                if (loadedValues.vnd) document.getElementById('vnd-input').value = loadedValues.vnd;
-                if (loadedValues.rub) document.getElementById('rub-input').value = loadedValues.rub;
-                currentValues = loadedValues;
-                
-                // Если есть значение EUR, пересчитываем
-                if (loadedValues.eur) {
-                    calculateAll();
-                }
-            }
-            
-            if (savedRates) {
-                const loadedRates = JSON.parse(savedRates);
-                Object.assign(rates, loadedRates);
-                
-                document.getElementById('rate-usd').value = rates.usd;
-                document.getElementById('rate-krw').value = rates.krw;
-                document.getElementById('rate-vnd').value = rates.vnd;
-                document.getElementById('rate-rub').value = rates.rub;
-            }
-        }
-        
-        // Mouse wheel support for inputs
+        // Mouse wheel support for inputs (smooth)
         document.querySelectorAll('.input-cell').forEach(input => {
             input.addEventListener('wheel', function(e) {
                 e.preventDefault();
                 const step = parseFloat(this.step) || 1;
                 const currentValue = parseFloat(this.value) || 0;
                 
+                let newValue;
                 if (e.deltaY < 0) {
-                    this.value = (currentValue + step).toFixed(this.step < 1 ? 2 : 0);
+                    newValue = currentValue + step;
                 } else {
-                    const min = 0;
-                    const newValue = Math.max(min, currentValue - step);
-                    this.value = newValue.toFixed(this.step < 1 ? 2 : 0);
+                    newValue = Math.max(0, currentValue - step);
+                }
+                
+                // Format based on step
+                if (step < 1) {
+                    this.value = newValue.toFixed(2);
+                } else {
+                    this.value = Math.round(newValue);
                 }
                 
                 if (this.id === 'eur-input') {
@@ -786,8 +830,6 @@
                     const currency = this.id.replace('-input', '');
                     validateCurrency(currency);
                 }
-                
-                saveToLocalStorage();
             });
         });
     </script>
