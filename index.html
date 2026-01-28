@@ -13,6 +13,8 @@
             --light-gray: #E5E5E5;
             --white: #FFFFFF;
             --radius: 12px;
+            --green: #4CAF50;
+            --red: #F44336;
         }
 
         * { 
@@ -27,10 +29,14 @@
             color: var(--white);
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container { 
-            max-width: 800px; 
+            max-width: 900px; 
+            width: 100%;
             margin: 0 auto;
         }
         
@@ -41,7 +47,7 @@
         }
         
         .title {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--white);
             margin-bottom: 8px;
@@ -71,22 +77,25 @@
         }
         
         th, td {
-            padding: 16px 12px;
+            padding: 18px 12px;
             text-align: center;
+            vertical-align: middle;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         th {
             font-weight: 500;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--light-gray);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            height: 60px;
         }
         
         /* Input fields - compact and clean */
         .input-cell {
             width: 100%;
+            height: 50px;
             padding: 14px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -115,8 +124,12 @@
             padding: 12px 8px;
             border-radius: 6px;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px;
             margin: 2px 0;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .min { 
@@ -131,33 +144,35 @@
             border: 1px solid rgba(229, 229, 229, 0.2);
         }
         
-        /* Check cells - minimal */
+        /* Check cells - with colors */
         .check-cell {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            font-size: 14px;
+            font-size: 16px;
             background: rgba(255, 255, 255, 0.08);
         }
         
         .valid { 
-            background: rgba(252, 163, 17, 0.15); 
-            color: var(--gold);
+            background: rgba(76, 175, 80, 0.2); 
+            color: var(--green);
+            border: 1px solid rgba(76, 175, 80, 0.3);
         }
         
         .invalid { 
-            background: rgba(255, 255, 255, 0.1); 
-            color: var(--light-gray);
+            background: rgba(244, 67, 54, 0.2); 
+            color: var(--red);
+            border: 1px solid rgba(244, 67, 54, 0.3);
         }
         
         /* Hidden rates controls */
         .rates-toggle {
             text-align: center;
-            margin: 20px 0;
+            margin: 25px 0 15px;
         }
         
         .toggle-btn {
@@ -198,11 +213,11 @@
         .rate-label {
             color: var(--light-gray);
             font-size: 14px;
-            min-width: 60px;
+            min-width: 70px;
         }
         
         .rate-input {
-            width: 120px;
+            width: 130px;
             padding: 8px 12px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -221,7 +236,7 @@
         }
         
         .btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: rgba(252, 163, 17, 0.9);
             border: none;
             border-radius: 8px;
@@ -262,9 +277,11 @@
         @media (max-width: 768px) {
             .container { padding: 10px; }
             th, td { padding: 12px 8px; }
-            .input-cell { padding: 12px; font-size: 15px; }
+            .input-cell { padding: 12px; font-size: 15px; height: 44px; }
             .controls { flex-direction: column; }
             .btn { width: 100%; justify-content: center; }
+            .rate-control { flex-direction: column; gap: 8px; align-items: flex-start; }
+            .rate-input { width: 100%; }
         }
     </style>
 </head>
@@ -297,37 +314,32 @@
                             <input type="number" 
                                    id="eur-input" 
                                    class="input-cell" 
-                                   value="0.1" 
-                                   step="0.1"
-                                   placeholder="0.0">
+                                   placeholder="0.0"
+                                   step="0.1">
                         </td>
                         <td>
                             <input type="number" 
                                    id="usd-input" 
                                    class="input-cell" 
-                                   value="0.108" 
-                                   step="0.1"
-                                   placeholder="0.0">
+                                   placeholder="0.0"
+                                   step="0.1">
                         </td>
                         <td>
                             <input type="number" 
                                    id="krw-input" 
                                    class="input-cell" 
-                                   value="145" 
                                    placeholder="0">
                         </td>
                         <td>
                             <input type="number" 
                                    id="vnd-input" 
                                    class="input-cell" 
-                                   value="2700" 
                                    placeholder="0">
                         </td>
                         <td>
                             <input type="number" 
                                    id="rub-input" 
                                    class="input-cell" 
-                                   value="10" 
                                    placeholder="0">
                         </td>
                     </tr>
@@ -335,38 +347,38 @@
                     <!-- Row 2: Min range -->
                     <tr>
                         <td>
-                            <div class="result-cell min" id="eur-min">0.07</div>
+                            <div class="result-cell min" id="eur-min">—</div>
                         </td>
                         <td>
-                            <div class="result-cell min" id="usd-min">0.07</div>
+                            <div class="result-cell min" id="usd-min">—</div>
                         </td>
                         <td>
-                            <div class="result-cell min" id="krw-min">97</div>
+                            <div class="result-cell min" id="krw-min">—</div>
                         </td>
                         <td>
-                            <div class="result-cell min" id="vnd-min">1800</div>
+                            <div class="result-cell min" id="vnd-min">—</div>
                         </td>
                         <td>
-                            <div class="result-cell min" id="rub-min">7</div>
+                            <div class="result-cell min" id="rub-min">—</div>
                         </td>
                     </tr>
                     
                     <!-- Row 3: Max range -->
                     <tr>
                         <td>
-                            <div class="result-cell max" id="eur-max">0.15</div>
+                            <div class="result-cell max" id="eur-max">—</div>
                         </td>
                         <td>
-                            <div class="result-cell max" id="usd-max">0.16</div>
+                            <div class="result-cell max" id="usd-max">—</div>
                         </td>
                         <td>
-                            <div class="result-cell max" id="krw-max">218</div>
+                            <div class="result-cell max" id="krw-max">—</div>
                         </td>
                         <td>
-                            <div class="result-cell max" id="vnd-max">4050</div>
+                            <div class="result-cell max" id="vnd-max">—</div>
                         </td>
                         <td>
-                            <div class="result-cell max" id="rub-max">15</div>
+                            <div class="result-cell max" id="rub-max">—</div>
                         </td>
                     </tr>
                     
@@ -376,16 +388,16 @@
                             Check
                         </td>
                         <td>
-                            <div class="check-cell valid" id="check-usd">✓</div>
+                            <div class="check-cell invalid" id="check-usd">✗</div>
                         </td>
                         <td>
-                            <div class="check-cell valid" id="check-krw">✓</div>
+                            <div class="check-cell invalid" id="check-krw">✗</div>
                         </td>
                         <td>
-                            <div class="check-cell valid" id="check-vnd">✓</div>
+                            <div class="check-cell invalid" id="check-vnd">✗</div>
                         </td>
                         <td>
-                            <div class="check-cell valid" id="check-rub">✓</div>
+                            <div class="check-cell invalid" id="check-rub">✗</div>
                         </td>
                     </tr>
                 </tbody>
@@ -400,23 +412,28 @@
             
             <div class="rates-panel" id="ratesPanel">
                 <div class="rate-control">
+                    <span class="rate-label">EUR Rate:</span>
+                    <input type="number" id="rate-eur" class="rate-input" value="1.00" step="0.01" readonly>
+                </div>
+                
+                <div class="rate-control">
                     <span class="rate-label">USD Rate:</span>
-                    <input type="number" id="rate-usd" class="rate-input" value="1.08" step="0.01">
+                    <input type="number" id="rate-usd" class="rate-input" value="1.19" step="0.01">
                 </div>
                 
                 <div class="rate-control">
                     <span class="rate-label">KRW Rate:</span>
-                    <input type="number" id="rate-krw" class="rate-input" value="1450" step="10">
+                    <input type="number" id="rate-krw" class="rate-input" value="1712.96" step="0.01">
                 </div>
                 
                 <div class="rate-control">
                     <span class="rate-label">VND Rate:</span>
-                    <input type="number" id="rate-vnd" class="rate-input" value="27000" step="100">
+                    <input type="number" id="rate-vnd" class="rate-input" value="31127.90" step="0.01">
                 </div>
                 
                 <div class="rate-control">
                     <span class="rate-label">RUB Rate:</span>
-                    <input type="number" id="rate-rub" class="rate-input" value="100" step="1">
+                    <input type="number" id="rate-rub" class="rate-input" value="91.18" step="0.01">
                 </div>
             </div>
             
@@ -441,28 +458,29 @@
     </div>
 
     <script>
-        // Exchange rates
+        // Exchange rates (updated)
         const rates = {
-            usd: 1.08,
-            krw: 1450,
-            vnd: 27000,
-            rub: 100
+            eur: 1.00,
+            usd: 1.19,
+            krw: 1712.96,
+            vnd: 31127.90,
+            rub: 91.18
         };
         
-        // Current values
+        // Current values - все пустые изначально
         let currentValues = {
-            eur: 0.1,
-            usd: 0.108,
-            krw: 145,
-            vnd: 2700,
-            rub: 10
+            eur: 0,
+            usd: 0,
+            krw: 0,
+            vnd: 0,
+            rub: 0
         };
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
-            calculateAll();
             loadFromLocalStorage();
+            updateAllChecksToX();
         });
         
         // Setup event listeners
@@ -487,11 +505,26 @@
             });
         }
         
+        // Set all checks to X initially
+        function updateAllChecksToX() {
+            ['usd', 'krw', 'vnd', 'rub'].forEach(currency => {
+                const checkElement = document.getElementById(`check-${currency}`);
+                checkElement.className = 'check-cell invalid';
+                checkElement.textContent = '✗';
+            });
+        }
+        
         // MAIN CALCULATION FUNCTION
         function calculateAll() {
             // Get EUR value
             const eurValue = parseFloat(document.getElementById('eur-input').value) || 0;
             currentValues.eur = eurValue;
+            
+            // Если EUR = 0, сбрасываем всё
+            if (eurValue === 0) {
+                resetResults();
+                return;
+            }
             
             // Calculate EUR range (±1.5)
             const eurMin = eurValue / 1.5;
@@ -514,6 +547,23 @@
             saveToLocalStorage();
         }
         
+        // Reset results when EUR is 0
+        function resetResults() {
+            document.getElementById('eur-min').textContent = '—';
+            document.getElementById('eur-max').textContent = '—';
+            
+            ['usd', 'krw', 'vnd', 'rub'].forEach(currency => {
+                document.getElementById(`${currency}-min`).textContent = '—';
+                document.getElementById(`${currency}-max`).textContent = '—';
+                
+                const checkElement = document.getElementById(`check-${currency}`);
+                checkElement.className = 'check-cell invalid';
+                checkElement.textContent = '✗';
+            });
+            
+            saveToLocalStorage();
+        }
+        
         // CALCULATE FOR SPECIFIC CURRENCY
         function calculateCurrency(currency, rate, eurMin, eurMax) {
             // MIN: (EUR / 1.5) × Rate
@@ -526,11 +576,16 @@
             const decimals = currency === 'usd' ? 2 : 0;
             
             // Update display
-            document.getElementById(`${currency}-min`).textContent = 
-                currency === 'usd' ? minInCurrency.toFixed(decimals) : Math.round(minInCurrency);
-                
-            document.getElementById(`${currency}-max`).textContent = 
-                currency === 'usd' ? maxInCurrency.toFixed(decimals) : Math.round(maxInCurrency);
+            const minElement = document.getElementById(`${currency}-min`);
+            const maxElement = document.getElementById(`${currency}-max`);
+            
+            if (currency === 'usd') {
+                minElement.textContent = minInCurrency.toFixed(decimals);
+                maxElement.textContent = maxInCurrency.toFixed(decimals);
+            } else {
+                minElement.textContent = Math.round(minInCurrency).toLocaleString();
+                maxElement.textContent = Math.round(maxInCurrency).toLocaleString();
+            }
         }
         
         // VALIDATE ALL CURRENCIES
@@ -546,8 +601,19 @@
             const inputValue = parseFloat(document.getElementById(`${currency}-input`).value) || 0;
             currentValues[currency] = inputValue;
             
-            const minValue = parseFloat(document.getElementById(`${currency}-min`).textContent) || 0;
-            const maxValue = parseFloat(document.getElementById(`${currency}-max`).textContent) || 0;
+            const minText = document.getElementById(`${currency}-min`).textContent;
+            const maxText = document.getElementById(`${currency}-max`).textContent;
+            
+            // Если нет диапазона (тире), то проверка не проходит
+            if (minText === '—' || maxText === '—') {
+                const checkElement = document.getElementById(`check-${currency}`);
+                checkElement.className = 'check-cell invalid';
+                checkElement.textContent = '✗';
+                return;
+            }
+            
+            const minValue = parseFloat(minText.replace(/,/g, '')) || 0;
+            const maxValue = parseFloat(maxText.replace(/,/g, '')) || 0;
             
             const checkElement = document.getElementById(`check-${currency}`);
             const isValid = inputValue >= minValue && inputValue <= maxValue;
@@ -578,25 +644,28 @@
         
         // RESET TO DEFAULT VALUES
         function resetValues() {
-            document.getElementById('eur-input').value = '0.1';
-            document.getElementById('usd-input').value = '0.108';
-            document.getElementById('krw-input').value = '145';
-            document.getElementById('vnd-input').value = '2700';
-            document.getElementById('rub-input').value = '10';
+            // Очищаем поля ввода
+            document.getElementById('eur-input').value = '';
+            document.getElementById('usd-input').value = '';
+            document.getElementById('krw-input').value = '';
+            document.getElementById('vnd-input').value = '';
+            document.getElementById('rub-input').value = '';
             
-            // Reset rates
-            rates.usd = 1.08;
-            rates.krw = 1450;
-            rates.vnd = 27000;
-            rates.rub = 100;
+            // Сбрасываем результаты
+            resetResults();
             
-            // Update rate inputs
+            // Сбрасываем курсы к значениям по умолчанию
+            rates.usd = 1.19;
+            rates.krw = 1712.96;
+            rates.vnd = 31127.90;
+            rates.rub = 91.18;
+            
+            // Обновляем поля курсов
             document.getElementById('rate-usd').value = rates.usd;
             document.getElementById('rate-krw').value = rates.krw;
             document.getElementById('rate-vnd').value = rates.vnd;
             document.getElementById('rate-rub').value = rates.rub;
             
-            calculateAll();
             showNotification('Reset to defaults');
         }
         
@@ -608,13 +677,8 @@
             document.getElementById('vnd-input').value = '';
             document.getElementById('rub-input').value = '';
             
-            // Clear results
-            ['eur', 'usd', 'krw', 'vnd', 'rub'].forEach(currency => {
-                document.getElementById(`${currency}-min`).textContent = '—';
-                document.getElementById(`${currency}-max`).textContent = '—';
-                document.getElementById(`check-${currency}`).className = 'check-cell invalid';
-                document.getElementById(`check-${currency}`).textContent = '✗';
-            });
+            // Reset results
+            resetResults();
             
             showNotification('All cleared');
         }
@@ -676,12 +740,18 @@
             
             if (savedValues) {
                 const loadedValues = JSON.parse(savedValues);
-                document.getElementById('eur-input').value = loadedValues.eur;
-                document.getElementById('usd-input').value = loadedValues.usd;
-                document.getElementById('krw-input').value = loadedValues.krw;
-                document.getElementById('vnd-input').value = loadedValues.vnd;
-                document.getElementById('rub-input').value = loadedValues.rub;
+                // Загружаем только если значения не пустые
+                if (loadedValues.eur) document.getElementById('eur-input').value = loadedValues.eur;
+                if (loadedValues.usd) document.getElementById('usd-input').value = loadedValues.usd;
+                if (loadedValues.krw) document.getElementById('krw-input').value = loadedValues.krw;
+                if (loadedValues.vnd) document.getElementById('vnd-input').value = loadedValues.vnd;
+                if (loadedValues.rub) document.getElementById('rub-input').value = loadedValues.rub;
                 currentValues = loadedValues;
+                
+                // Если есть значение EUR, пересчитываем
+                if (loadedValues.eur) {
+                    calculateAll();
+                }
             }
             
             if (savedRates) {
@@ -705,7 +775,7 @@
                 if (e.deltaY < 0) {
                     this.value = (currentValue + step).toFixed(this.step < 1 ? 2 : 0);
                 } else {
-                    const min = parseFloat(this.min) || 0;
+                    const min = 0;
                     const newValue = Math.max(min, currentValue - step);
                     this.value = newValue.toFixed(this.step < 1 ? 2 : 0);
                 }
