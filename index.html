@@ -15,6 +15,7 @@
             --radius: 12px;
             --green: #4CAF50;
             --red: #F44336;
+            --blue: #669BBC;
             
             /* Theme variables */
             --bg-primary: #14213D;
@@ -196,9 +197,21 @@
             border: 1px solid var(--border-color);
         }
         
+        /* New: Exact value cell */
+        .exact { 
+            background: rgba(102, 155, 188, 0.1); 
+            color: var(--blue);
+            border: 1px solid rgba(102, 155, 188, 0.2);
+        }
+        
         .light-theme .max {
             background: rgba(20, 33, 61, 0.08);
             color: #14213D;
+        }
+        
+        .light-theme .exact {
+            background: rgba(102, 155, 188, 0.08);
+            color: #0056b3;
         }
         
         /* Check cells */
@@ -526,7 +539,26 @@
                         </td>
                     </tr>
                     
-                    <!-- Row 4: Validation -->
+                    <!-- NEW ROW: Exact values -->
+                    <tr>
+                        <td style="font-size: 13px; color: var(--text-secondary); opacity: 0.7; height: 50px;">
+                            Exact
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-usd">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-krw">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-vnd">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-rub">—</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Row 5: Validation -->
                     <tr>
                         <td style="font-size: 13px; color: var(--text-secondary); opacity: 0.7; height: 50px;">
                             ✓ / ✗
@@ -597,7 +629,7 @@
         
         <!-- Footer -->
         <div class="info-footer">
-            <div class="formula">MIN = (EUR ÷ 1.5) × Rate | MAX = (EUR × 1.5) × Rate</div>
+            <div class="formula">MIN = (EUR ÷ 1.5) × Rate | MAX = (EUR × 1.5) × Rate | EXACT = EUR × Rate</div>
             <div class="signature">Made by Aleksei Shabarin</div>
         </div>
     </div>
@@ -741,14 +773,17 @@
             const eurMin = eurValue / 1.5;
             const eurMax = eurValue * 1.5;
             
+            // Update EUR display
             document.getElementById('eur-min').textContent = eurMin.toFixed(2);
             document.getElementById('eur-max').textContent = eurMax.toFixed(2);
             
-            calculateCurrency('usd', rates.usd, eurMin, eurMax);
-            calculateCurrency('krw', rates.krw, eurMin, eurMax);
-            calculateCurrency('vnd', rates.vnd, eurMin, eurMax);
-            calculateCurrency('rub', rates.rub, eurMin, eurMax);
+            // Calculate for other currencies
+            calculateCurrency('usd', rates.usd, eurMin, eurMax, eurValue);
+            calculateCurrency('krw', rates.krw, eurMin, eurMax, eurValue);
+            calculateCurrency('vnd', rates.vnd, eurMin, eurMax, eurValue);
+            calculateCurrency('rub', rates.rub, eurMin, eurMax, eurValue);
             
+            // Validate all
             validateAllCurrencies();
         }
         
@@ -760,6 +795,7 @@
             ['usd', 'krw', 'vnd', 'rub'].forEach(currency => {
                 document.getElementById(`${currency}-min`).textContent = '—';
                 document.getElementById(`${currency}-max`).textContent = '—';
+                document.getElementById(`exact-${currency}`).textContent = '—';
                 
                 const checkElement = document.getElementById(`check-${currency}`);
                 checkElement.className = 'check-cell invalid';
@@ -768,19 +804,32 @@
         }
         
         // CALCULATE FOR SPECIFIC CURRENCY
-        function calculateCurrency(currency, rate, eurMin, eurMax) {
+        function calculateCurrency(currency, rate, eurMin, eurMax, eurValue) {
+            // MIN: (EUR / 1.5) × Rate
             const minInCurrency = eurMin * rate;
+            
+            // MAX: (EUR × 1.5) × Rate
             const maxInCurrency = eurMax * rate;
+            
+            // EXACT: EUR × Rate (НОВАЯ ФОРМУЛА)
+            const exactInCurrency = eurValue * rate;
             
             const minElement = document.getElementById(`${currency}-min`);
             const maxElement = document.getElementById(`${currency}-max`);
+            const exactElement = document.getElementById(`exact-${currency}`);
             
             if (currency === 'usd') {
                 minElement.textContent = minInCurrency.toFixed(2);
                 maxElement.textContent = maxInCurrency.toFixed(2);
+                exactElement.textContent = exactInCurrency.toFixed(2);
             } else {
-                minElement.textContent = Math.round(minInCurrency).toLocaleString();
-                maxElement.textContent = Math.round(maxInCurrency).toLocaleString();
+                // Форматируем большие числа с пробелами
+                const formatter = new Intl.NumberFormat('ru-RU', {
+                    maximumFractionDigits: 0
+                });
+                minElement.textContent = formatter.format(Math.round(minInCurrency));
+                maxElement.textContent = formatter.format(Math.round(maxInCurrency));
+                exactElement.textContent = formatter.format(Math.round(exactInCurrency));
             }
         }
         
@@ -807,8 +856,8 @@
                 return;
             }
             
-            const minValue = parseFloat(minText.replace(/,/g, '')) || 0;
-            const maxValue = parseFloat(maxText.replace(/,/g, '')) || 0;
+            const minValue = parseFloat(minText.replace(/\s/g, '').replace(',', '.')) || 0;
+            const maxValue = parseFloat(maxText.replace(/\s/g, '').replace(',', '.')) || 0;
             
             const checkElement = document.getElementById(`check-${currency}`);
             const isValid = inputValue >= minValue && inputValue <= maxValue;
