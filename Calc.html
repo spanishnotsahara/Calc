@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Calc</title>
+    <style>
+        /* Color palette: https://coolors.co/palette/000000-14213d-fca311-e5e5e5-ffffff */
+        :root {
+            --black: #000000;
+            --navy: #14213D;
+            --gold: #FCA311;
+            --light-gray: #E5E5E5;
+            --white: #FFFFFF;
+            --radius: 12px;
+            --green: #4CAF50;
+            --red: #F44336;
+            --blue: #669BBC;
+            
+            /* Theme variables */
+            --bg-primary: #14213D;
+            --bg-secondary: rgba(255, 255, 255, 0.05);
+            --text-primary: #FFFFFF;
+            --text-secondary: #E5E5E5;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Light theme */
+        .light-theme {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: rgba(20, 33, 61, 0.05);
+            --text-primary: #000000;
+            --text-secondary: #14213D;
+            --border-color: rgba(20, 33, 61, 0.1);
+            --input-bg: rgba(20, 33, 61, 0.08);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .container { 
+            max-width: 1000px; 
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-btn {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(252, 163, 17, 0.3);
+            font-size: 20px;
+        }
+        
+        .theme-btn:hover {
+            transform: rotate(30deg) scale(1.1);
+            box-shadow: 0 6px 16px rgba(252, 163, 17, 0.4);
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px 0 25px;
+        }
+        
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            transition: color 0.4s ease;
+        }
+        
+        /* Main calculator card */
+        .calculator-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s ease;
+        }
+        
+        /* Compact table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 16px 10px;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+        
+        th {
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-secondary);
+            height: 50px;
+            transition: color 0.4s ease;
+        }
+        
+        /* Input fields */
+        .input-cell {
+            width: 100%;
+            height: 52px;
+            padding: 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            appearance: textfield;
+        }
+        
+        .input-cell::-webkit-inner-spin-button,
+        .input-cell::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .input-cell:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(252, 163, 17, 0.05);
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px rgba(252, 163, 17, 0.1);
+        }
+        
+        /* EUR and USD specific */
+        #eur-input, #usd-input {
+            background: rgba(252, 163, 17, 0.08);
+            border-color: rgba(252, 163, 17, 0.3);
+        }
+        
+        /* Results cells */
+        .result-cell {
+            padding: 14px 6px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .min { 
+            background: rgba(252, 163, 17, 0.1); 
+            color: var(--gold);
+            border: 1px solid rgba(252, 163, 17, 0.2);
+        }
+        
+        .max { 
+            background: rgba(229, 229, 229, 0.1); 
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        /* New: Exact value cell */
+        .exact { 
+            background: rgba(102, 155, 188, 0.1); 
+            color: var(--blue);
+            border: 1px solid rgba(102, 155, 188, 0.2);
+        }
+        
+        .light-theme .max {
+            background: rgba(20, 33, 61, 0.08);
+            color: #14213D;
+        }
+        
+        .light-theme .exact {
+            background: rgba(102, 155, 188, 0.08);
+            color: #0056b3;
+        }
+        
+        /* Check cells */
+        .check-cell {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 16px;
+            background: var(--input-bg);
+            transition: all 0.3s ease;
+        }
+        
+        .valid { 
+            background: rgba(76, 175, 80, 0.2); 
+            color: var(--green);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            animation: pulseGreen 0.5s ease;
+        }
+        
+        .invalid { 
+            background: rgba(244, 67, 54, 0.2); 
+            color: var(--red);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            animation: pulseRed 0.5s ease;
+        }
+        
+        /* Hidden rates controls */
+        .rates-toggle {
+            text-align: center;
+            margin: 25px 0 15px;
+        }
+        
+        .toggle-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-btn:hover {
+            background: rgba(252, 163, 17, 0.1);
+            transform: translateY(-1px);
+            border-color: var(--gold);
+        }
+        
+        .rates-panel {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 15px;
+            display: none;
+            border: 1px solid var(--border-color);
+            animation: slideDown 0.3s ease;
+        }
+        
+        .rate-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .rate-control:last-child {
+            margin-bottom: 0;
+        }
+        
+        .rate-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            min-width: 70px;
+        }
+        
+        .rate-input {
+            width: 130px;
+            padding: 8px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            text-align: center;
+            color: var(--text-primary);
+            appearance: textfield;
+            transition: all 0.3s ease;
+        }
+        
+        .rate-input::-webkit-inner-spin-button,
+        .rate-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .rate-input:focus {
+            border-color: var(--gold);
+            background: rgba(252, 163, 17, 0.05);
+        }
+        
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            background: rgba(252, 163, 17, 0.9);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--black);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover { 
+            background: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(252, 163, 17, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(252, 163, 17, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(252, 163, 17, 0.1);
+            border-color: var(--gold);
+        }
+        
+        /* Footer info */
+        .info-footer {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: color 0.4s ease;
+        }
+        
+        .formula {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+        
+        .signature {
+            font-size: 11px;
+            opacity: 0.5;
+        }
+        
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulseGreen {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes pulseRed {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes themeSwitch {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+            }
+            .theme-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+            th, td { padding: 12px 6px; font-size: 12px; }
+            .input-cell { padding: 12px; font-size: 14px; height: 48px; }
+            .controls { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .rate-control { flex-direction: column; gap: 8px; align-items: flex-start; }
+            .rate-input { width: 100%; }
+            .result-cell { font-size: 13px; padding: 12px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle">
+        <button class="theme-btn" id="themeToggle">
+            🌙
+        </button>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="title">💱 Currency Calculator</div>
+        </div>
+        
+        <!-- Main Calculator -->
+        <div class="calculator-card">
+            <table>
+                <!-- Header row -->
+                <thead>
+                    <tr>
+                        <th>🇪🇺 EUR</th>
+                        <th>🇺🇸 USD</th>
+                        <th>🇷🇸 RSD</th>
+                        <th>🇰🇷 KRW</th>
+                        <th>🇻🇳 VND</th>
+                        <th>🇷🇺 RUB</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <!-- Row 1: Input values -->
+                    <tr>
+                        <td>
+                            <input type="number" 
+                                   id="eur-input" 
+                                   class="input-cell" 
+                                   placeholder="0.0"
+                                   step="0.1">
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   id="usd-input" 
+                                   class="input-cell" 
+                                   placeholder="0.0"
+                                   step="0.1">
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   id="rsd-input" 
+                                   class="input-cell" 
+                                   placeholder="0">
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   id="krw-input" 
+                                   class="input-cell" 
+                                   placeholder="0">
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   id="vnd-input" 
+                                   class="input-cell" 
+                                   placeholder="0">
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   id="rub-input" 
+                                   class="input-cell" 
+                                   placeholder="0">
+                        </td>
+                    </tr>
+                    
+                    <!-- Row 2: Min range -->
+                    <tr>
+                        <td>
+                            <div class="result-cell min" id="eur-min">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell min" id="usd-min">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell min" id="rsd-min">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell min" id="krw-min">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell min" id="vnd-min">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell min" id="rub-min">—</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Row 3: Max range -->
+                    <tr>
+                        <td>
+                            <div class="result-cell max" id="eur-max">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell max" id="usd-max">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell max" id="rsd-max">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell max" id="krw-max">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell max" id="vnd-max">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell max" id="rub-max">—</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Row 4: Exact values -->
+                    <tr>
+                        <td style="font-size: 13px; color: var(--text-secondary); opacity: 0.7; height: 50px;">
+                            Exact
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-usd">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-rsd">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-krw">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-vnd">—</div>
+                        </td>
+                        <td>
+                            <div class="result-cell exact" id="exact-rub">—</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Row 5: Validation -->
+                    <tr>
+                        <td style="font-size: 13px; color: var(--text-secondary); opacity: 0.7; height: 50px;">
+                            ✓ / ✗
+                        </td>
+                        <td>
+                            <div class="check-cell invalid" id="check-usd">✗</div>
+                        </td>
+                        <td>
+                            <div class="check-cell invalid" id="check-rsd">✗</div>
+                        </td>
+                        <td>
+                            <div class="check-cell invalid" id="check-krw">✗</div>
+                        </td>
+                        <td>
+                            <div class="check-cell invalid" id="check-vnd">✗</div>
+                        </td>
+                        <td>
+                            <div class="check-cell invalid" id="check-rub">✗</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Hidden rates panel -->
+            <div class="rates-toggle">
+                <button class="toggle-btn" onclick="toggleRates()">
+                    ⚙️ Exchange Rates
+                </button>
+            </div>
+            
+            <div class="rates-panel" id="ratesPanel">
+                <div class="rate-control">
+                    <span class="rate-label">EUR:</span>
+                    <input type="number" id="rate-eur" class="rate-input" value="1.00" step="0.01" readonly>
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">USD:</span>
+                    <input type="number" id="rate-usd" class="rate-input" value="1.19" step="0.01">
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">RSD:</span>
+                    <input type="number" id="rate-rsd" class="rate-input" value="117.30" step="0.01">
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">KRW:</span>
+                    <input type="number" id="rate-krw" class="rate-input" value="1712.96" step="0.01">
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">VND:</span>
+                    <input type="number" id="rate-vnd" class="rate-input" value="31127.90" step="0.01">
+                </div>
+                
+                <div class="rate-control">
+                    <span class="rate-label">RUB:</span>
+                    <input type="number" id="rate-rub" class="rate-input" value="91.18" step="0.01">
+                </div>
+            </div>
+            
+            <!-- Control buttons -->
+            <div class="controls">
+                <button class="btn" onclick="calculateAll()">
+                    🔄 Calculate All
+                </button>
+                <button class="btn btn-secondary" onclick="resetValues()">
+                    ↺ Reset
+                </button>
+                <button class="btn btn-secondary" onclick="clearAll()">
+                    ✕ Clear
+                </button>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="info-footer">
+            <div class="formula">MIN = (EUR ÷ 1.5) × Rate | MAX = (EUR × 1.5) × Rate | EXACT = EUR × Rate</div>
+            <div class="signature">Made by Aleksei Shabarin</div>
+        </div>
+    </div>
+
+    <script>
+        // Exchange rates
+        const rates = {
+            eur: 1.00,
+            usd: 1.19,
+            rsd: 117.30,
+            krw: 1712.96,
+            vnd: 31127.90,
+            rub: 91.18
+        };
+        
+        // Current values
+        let currentValues = {
+            eur: 0,
+            usd: 0,
+            rsd: 0,
+            krw: 0,
+            vnd: 0,
+            rub: 0
+        };
+        
+        // Theme state
+        let isDarkTheme = true;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            setupTheme();
+            clearAllOnStart();
+        });
+        
+        // Setup theme from localStorage or system preference
+        function setupTheme() {
+            const savedTheme = localStorage.getItem('currencyCalcTheme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+                switchToLightTheme();
+            } else {
+                switchToDarkTheme();
+            }
+        }
+        
+        // Switch to dark theme
+        function switchToDarkTheme() {
+            document.body.classList.remove('light-theme');
+            document.getElementById('themeToggle').textContent = '🌙';
+            isDarkTheme = true;
+            localStorage.setItem('currencyCalcTheme', 'dark');
+        }
+        
+        // Switch to light theme
+        function switchToLightTheme() {
+            document.body.classList.add('light-theme');
+            document.getElementById('themeToggle').textContent = '☀️';
+            isDarkTheme = false;
+            localStorage.setItem('currencyCalcTheme', 'light');
+        }
+        
+        // Toggle theme
+        function toggleTheme() {
+            const btn = document.getElementById('themeToggle');
+            btn.style.animation = 'themeSwitch 0.3s ease';
+            
+            setTimeout(() => {
+                if (isDarkTheme) {
+                    switchToLightTheme();
+                } else {
+                    switchToDarkTheme();
+                }
+                
+                setTimeout(() => {
+                    btn.style.animation = '';
+                }, 300);
+            }, 150);
+            
+            showNotification(isDarkTheme ? 'Switched to light theme' : 'Switched to dark theme');
+        }
+        
+        // Clear everything on start
+        function clearAllOnStart() {
+            document.getElementById('eur-input').value = '';
+            document.getElementById('usd-input').value = '';
+            document.getElementById('rsd-input').value = '';
+            document.getElementById('krw-input').value = '';
+            document.getElementById('vnd-input').value = '';
+            document.getElementById('rub-input').value = '';
+            
+            resetResults();
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Auto-calculate when EUR changes
+            document.getElementById('eur-input').addEventListener('input', function() {
+                calculateAll();
+            });
+            
+            // Validate other currencies when they change
+            ['usd', 'rsd', 'krw', 'vnd', 'rub'].forEach(currency => {
+                document.getElementById(`${currency}-input`).addEventListener('input', function() {
+                    validateCurrency(currency);
+                });
+            });
+            
+            // Update rates when changed
+            ['usd', 'rsd', 'krw', 'vnd', 'rub'].forEach(currency => {
+                document.getElementById(`rate-${currency}`).addEventListener('change', function() {
+                    updateRate(currency);
+                });
+            });
+            
+            // Add keyboard support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    calculateAll();
+                }
+                if (e.key === 'Escape') {
+                    clearAll();
+                }
+                if (e.key === 't' || e.key === 'T') {
+                    toggleTheme();
+                }
+            });
+        }
+        
+        // MAIN CALCULATION FUNCTION
+        function calculateAll() {
+            const eurValue = parseFloat(document.getElementById('eur-input').value) || 0;
+            currentValues.eur = eurValue;
+            
+            if (eurValue === 0) {
+                resetResults();
+                return;
+            }
+            
+            const eurMin = eurValue / 1.5;
+            const eurMax = eurValue * 1.5;
+            
+            // Update EUR display
+            document.getElementById('eur-min').textContent = eurMin.toFixed(2);
+            document.getElementById('eur-max').textContent = eurMax.toFixed(2);
+            
+            // Calculate for other currencies
+            calculateCurrency('usd', rates.usd, eurMin, eurMax, eurValue);
+            calculateCurrency('rsd', rates.rsd, eurMin, eurMax, eurValue);
+            calculateCurrency('krw', rates.krw, eurMin, eurMax, eurValue);
+            calculateCurrency('vnd', rates.vnd, eurMin, eurMax, eurValue);
+            calculateCurrency('rub', rates.rub, eurMin, eurMax, eurValue);
+            
+            // Validate all
+            validateAllCurrencies();
+        }
+        
+        // Reset results when EUR is 0
+        function resetResults() {
+            document.getElementById('eur-min').textContent = '—';
+            document.getElementById('eur-max').textContent = '—';
+            
+            ['usd', 'rsd', 'krw', 'vnd', 'rub'].forEach(currency => {
+                document.getElementById(`${currency}-min`).textContent = '—';
+                document.getElementById(`${currency}-max`).textContent = '—';
+                document.getElementById(`exact-${currency}`).textContent = '—';
+                
+                const checkElement = document.getElementById(`check-${currency}`);
+                checkElement.className = 'check-cell invalid';
+                checkElement.textContent = '✗';
+            });
+        }
+        
+        // CALCULATE FOR SPECIFIC CURRENCY
+        function calculateCurrency(currency, rate, eurMin, eurMax, eurValue) {
+            // MIN: (EUR / 1.5) × Rate
+            const minInCurrency = eurMin * rate;
+            
+            // MAX: (EUR × 1.5) × Rate
+            const maxInCurrency = eurMax * rate;
+            
+            // EXACT: EUR × Rate
+            const exactInCurrency = eurValue * rate;
+            
+            const minElement = document.getElementById(`${currency}-min`);
+            const maxElement = document.getElementById(`${currency}-max`);
+            const exactElement = document.getElementById(`exact-${currency}`);
+            
+            if (currency === 'usd') {
+                minElement.textContent = minInCurrency.toFixed(2);
+                maxElement.textContent = maxInCurrency.toFixed(2);
+                exactElement.textContent = exactInCurrency.toFixed(2);
+            } else {
+                // Форматируем большие числа с пробелами
+                const formatter = new Intl.NumberFormat('ru-RU', {
+                    maximumFractionDigits: 0
+                });
+                minElement.textContent = formatter.format(Math.round(minInCurrency));
+                maxElement.textContent = formatter.format(Math.round(maxInCurrency));
+                exactElement.textContent = formatter.format(Math.round(exactInCurrency));
+            }
+        }
+        
+        // VALIDATE ALL CURRENCIES
+        function validateAllCurrencies() {
+            validateCurrency('usd');
+            validateCurrency('rsd');
+            validateCurrency('krw');
+            validateCurrency('vnd');
+            validateCurrency('rub');
+        }
+        
+        // VALIDATE SPECIFIC CURRENCY
+        function validateCurrency(currency) {
+            const inputValue = parseFloat(document.getElementById(`${currency}-input`).value) || 0;
+            currentValues[currency] = inputValue;
+            
+            const minText = document.getElementById(`${currency}-min`).textContent;
+            const maxText = document.getElementById(`${currency}-max`).textContent;
+            
+            if (minText === '—' || maxText === '—') {
+                const checkElement = document.getElementById(`check-${currency}`);
+                checkElement.className = 'check-cell invalid';
+                checkElement.textContent = '✗';
+                return;
+            }
+            
+            const minValue = parseFloat(minText.replace(/\s/g, '').replace(',', '.')) || 0;
+            const maxValue = parseFloat(maxText.replace(/\s/g, '').replace(',', '.')) || 0;
+            
+            const checkElement = document.getElementById(`check-${currency}`);
+            const isValid = inputValue >= minValue && inputValue <= maxValue;
+            
+            checkElement.className = `check-cell ${isValid ? 'valid' : 'invalid'}`;
+            checkElement.textContent = isValid ? '✓' : '✗';
+        }
+        
+        // UPDATE EXCHANGE RATE
+        function updateRate(currency) {
+            const rateInput = document.getElementById(`rate-${currency}`);
+            let newRate = parseFloat(rateInput.value);
+            
+            if (!isNaN(newRate) && newRate > 0) {
+                newRate = Math.round(newRate * 100) / 100;
+                rateInput.value = newRate.toFixed(2);
+                rates[currency] = newRate;
+                calculateAll();
+                showNotification(`Rate updated: ${newRate.toFixed(2)}`);
+            }
+        }
+        
+        // TOGGLE RATES PANEL
+        function toggleRates() {
+            const panel = document.getElementById('ratesPanel');
+            if (panel.style.display === 'block') {
+                panel.style.animation = 'slideDown 0.3s ease reverse';
+                setTimeout(() => {
+                    panel.style.display = 'none';
+                }, 250);
+            } else {
+                panel.style.display = 'block';
+                panel.style.animation = 'slideDown 0.3s ease';
+            }
+        }
+        
+        // RESET TO DEFAULT VALUES
+        function resetValues() {
+            document.getElementById('eur-input').value = '';
+            document.getElementById('usd-input').value = '';
+            document.getElementById('rsd-input').value = '';
+            document.getElementById('krw-input').value = '';
+            document.getElementById('vnd-input').value = '';
+            document.getElementById('rub-input').value = '';
+            
+            resetResults();
+            
+            rates.usd = 1.19;
+            rates.rsd = 117.30;
+            rates.krw = 1712.96;
+            rates.vnd = 31127.90;
+            rates.rub = 91.18;
+            
+            document.getElementById('rate-usd').value = rates.usd.toFixed(2);
+            document.getElementById('rate-rsd').value = rates.rsd.toFixed(2);
+            document.getElementById('rate-krw').value = rates.krw.toFixed(2);
+            document.getElementById('rate-vnd').value = rates.vnd.toFixed(2);
+            document.getElementById('rate-rub').value = rates.rub.toFixed(2);
+            
+            showNotification('Reset to defaults');
+        }
+        
+        // CLEAR ALL INPUTS
+        function clearAll() {
+            document.getElementById('eur-input').value = '';
+            document.getElementById('usd-input').value = '';
+            document.getElementById('rsd-input').value = '';
+            document.getElementById('krw-input').value = '';
+            document.getElementById('vnd-input').value = '';
+            document.getElementById('rub-input').value = '';
+            
+            resetResults();
+            
+            showNotification('All cleared');
+        }
+        
+        // SHOW NOTIFICATION
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(252, 163, 17, 0.95);
+                color: #000;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                border-left: 3px solid rgba(0, 0, 0, 0.2);
+                max-width: 300px;
+                word-wrap: break-word;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+            
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Mouse wheel support for inputs
+        document.querySelectorAll('.input-cell').forEach(input => {
+            input.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const step = parseFloat(this.step) || 1;
+                const currentValue = parseFloat(this.value) || 0;
+                
+                let newValue;
+                if (e.deltaY < 0) {
+                    newValue = currentValue + step;
+                } else {
+                    newValue = Math.max(0, currentValue - step);
+                }
+                
+                if (step < 1) {
+                    this.value = newValue.toFixed(2);
+                } else {
+                    this.value = Math.round(newValue);
+                }
+                
+                if (this.id === 'eur-input') {
+                    calculateAll();
+                } else {
+                    const currency = this.id.replace('-input', '');
+                    validateCurrency(currency);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
